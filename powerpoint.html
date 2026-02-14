@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>درس الباوربوينت | أكاديمية خالد</title><meta name="author" content="Khaled - volkov.shadow">
+<meta name="description" content="أكاديمية خالد لتعليم البرامج المكتبية والميكرومعلوماتية">
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.8;
+            text-align: right;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 25px;
+            border: 1px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        h1 { color: var(--primary); text-align: center; margin-bottom: 30px; font-size: 2.2rem; }
+        h2 { color: var(--primary); font-size: 1.6rem; margin-top: 30px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+
+        /* قسم النصائح الخمس الذهبية */
+        .gold-tips {
+            background: rgba(0, 210, 255, 0.07);
+            padding: 30px;
+            border-radius: 20px;
+            border-right: 8px solid var(--primary);
+            margin-bottom: 40px;
+        }
+
+        .gold-tips ul { list-style: none; padding: 0; }
+        .gold-tips li {
+            margin-bottom: 18px;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .gold-tips li::before {
+            content: "⭐";
+            margin-left: 12px;
+            font-size: 1.3rem;
+        }
+
+        /* تنسيق مشغل الفيديو */
+        .video-box {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 20px;
+            background: #000;
+            border: 2px solid #334155;
+            margin: 25px 0;
+        }
+
+        .video-box iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 30px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+/* كود تنظيم الموقع للهاتف */
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr; /* جعل الكروت تحت بعضها */
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem; /* تصغير العنوان ليناسب الشاشة */
+            }
+
+            .card {
+                margin-bottom: 10px; /* مسافة بسيطة بين الكروت */
+            }
+
+            .footer {
+                max-width: 90%; /* جعل التذييل بعرض الشاشة */
+                margin: 40px auto;
+            }
+        }
+        .back-home:hover { color: var(--primary); transform: translateX(-5px); }
+
+        .footer-tag { text-align: center; color: #64748b; margin-top: 40px; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>إرشادات خالد لمشروع PowerPoint احترافي 📽️</h1>
+
+        <div class="gold-tips">
+            <h2>💡 5 نصائح ذهبية لنجاح مشروعك:</h2>
+            <ul>
+                <li><strong>الوضوح والبساطة:</strong> لا تملأ الشريحة بالنصوص الكثيرة؛ استخدم رؤوس أقلام واضحة لتسهل القراءة].</li>
+                <li><strong>استخدام الوسائط:</strong> أضف الصور والفيديوهات لتعزيز فهم المحتوى، فالباوربوينت يعتمد على العرض البصري].</li>
+                <li><strong>تناسق التصميم:</strong> حافظ على نمط واحد (Theme) وألوان متناسقة في جميع الشرائح ليعطي طابعاً احترافياً].</li>
+                <li><strong>الانتقالات السلسة:</strong> استخدم خاصية الانتقالات (Transitions) بحكمة لتجعل التنقل بين الشرائح ممتعاً وغير مشتت].</li>
+                <li><strong>المراجعة النهائية:</strong> دائماً جرب العرض قبل تقديمه للتأكد من أن كل الصور والنصوص في مكانها الصحيح].</li>
+            </ul>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #334155;">
+
+        <h2>📺 فيديو الشرح الشامل (من الصفر للاحتراف)</h2>
+        <p>شاهد هذا الفيديو المختار بعناية لتعلم جميع أدوات الباوربوينت والتعرف على واجهة البرنامج بالتفصيل:</p>
+        
+        <div class="video-box">
+            <iframe 
+                src="https://www.youtube.com/embed/dMJdWewW3gA" 
+                title="PowerPoint Tutorial" 
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <center>
+            <a href="index.html" class="back-home">← العودة للرئيسية</a>
+        </center>
+    </div>
+
+    <div class="footer-tag">جميع الحقوق محفوظة - المبرمج خالد © 2026</div>
+
+</body>
+</html>
