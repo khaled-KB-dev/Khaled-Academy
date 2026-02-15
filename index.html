@@ -3,185 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية خالد للميكرومعلوماتية</title><meta name="author" content="Khaled - volkov.shadow">
-<meta name="description" content="أكاديمية خالد لتعليم البرامج المكتبية والميكرومعلوماتية">
+    <title>أكاديمية خالد للميكرومعلوماتية</title>
     <style>
         :root {
-            --primary: #00d2ff;
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --text: #ffffff;
+            --primary: #5ce1e6;
+            --bg-dark: #0f172a;
         }
-
-        /* تأثير الظهور الناعم عند فتح الصفحة */
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            animation: fadeInPage 1s ease-in-out;
-        }
-
-        @keyframes fadeInPage {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        h1 {
-            color: var(--primary);
-            font-size: 2.5rem;
-            text-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: #94a3b8;
-            font-size: 1.2rem;
-        }
-
-        /* حاوية الكروت */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            max-width: 1100px;
-            width: 100%;
-        }
-
-        /* تصميم الكارت */
-        .card {
-            background: var(--card-bg);
-            border: 1px solid #334155;
-            padding: 30px;
-            border-radius: 20px;
-            text-decoration: none;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg-dark);
             color: white;
-            text-align: center;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 150px;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2);
-        }
-
-        .card h3 {
-            margin: 0 0 10px 0;
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-
-        .card p {
             margin: 0;
-            color: #94a3b8;
-            font-size: 0.95rem;
+            padding: 20px;
+            /* حماية عملك: منع تحديد النصوص ومنع النسخ */
+            -webkit-user-select: none;
+            user-select: none;
         }
-
-        /* قسم التذييل (Footer) وزر الانستقرام */
-        .footer {
-            margin-top: 80px;
-            text-align: center;
-            background: rgba(30, 41, 59, 0.5);
-            padding: 40px;
-            border-radius: 30px;
-            width: 100%;
-            max-width: 500px;
-            border: 1px solid #334155;
+        .header { text-align: center; padding: 40px; }
+        .profile-img {
+            width: 150px; height: 150px; border-radius: 50%;
+            border: 4px solid var(--primary); object-fit: cover;
         }
-
-        .insta-btn {
-            display: inline-flex;
-            align-items: center;
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            color: white !important;
-            padding: 14px 35px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-top: 15px;
-            transition: 0.3s;
-            animation: pulseEffect 2s infinite;
+        h1 { color: var(--primary); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .insta-link {
+            display: inline-block; color: var(--primary); text-decoration: none;
+            border: 1px solid var(--primary); padding: 8px 20px; border-radius: 25px; margin-top: 10px;
         }
-
-        .insta-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 25px rgba(220, 39, 67, 0.5);
+        .grid-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px; max-width: 1000px; margin: 40px auto;
         }
-
-        @keyframes pulseEffect {
-            0% { box-shadow: 0 0 0 0 rgba(220, 39, 67, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(220, 39, 67, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(220, 39, 67, 0); }
+        .card {
+            background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px;
+            text-align: center; text-decoration: none; color: white; border: 1px solid transparent;
         }
-
-        .dev-tag {
-            margin-top: 25px;
-            font-size: 0.85rem;
-            color: #64748b;
+        .card:hover { border-color: var(--primary); transform: translateY(-5px); transition: 0.3s; }
+        
+        /* تنسيق الحقوق المحفوظة أسفل الصفحة */
+        footer {
+            text-align: center; padding: 40px 20px; margin-top: 60px;
+            border-top: 1px solid rgba(255,255,255,0.1); color: #94a3b8;
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>أكاديمية خالد للميكرومعلوماتية 🖥️</h1>
-        <p>كل ما تحتاجه لاحتراف البرمجيات المكتبية في مكان واحد</p>
+        <img src="me.png" class="profile-img" alt="خالد">
+        <h1>أكاديمية خالد للميكرومعلوماتية <span style="color: #1DA1F2;">✔</span></h1>
+        <p>احتراف البرمجيات المكتبية بكل سهولة</p>
+        <a href="https://www.instagram.com/volkov.shadow?igsh=MTIybGpjMmdsdHVpdA==" target="_blank" class="insta-link">
+            📷 @volkov.shadow
+        </a>
     </div>
 
     <div class="grid-container">
-        <a href="intro.html" class="card">
-            <h3>⚙️ الميكرومعلوماتية</h3>
-            <p>تعرف على عتاد وأنظمة الحاسوب</p>
-        </a>
-
-        <a href="word.html" class="card">
-            <h3>📝 Microsoft Word</h3>
-            <p>فن تنسيق النصوص والبحوث</p>
-        </a>
-
-        <a href="excel.html" class="card">
-            <h3>📊 Microsoft Excel</h3>
-            <p>إدارة الجداول والبيانات بذكاء</p>
-        </a>
-
-        <a href="powerpoint.html" class="card">
-            <h3>📽️ PowerPoint</h3>
-            <p>تصميم عروض تقديمية مذهلة</p>
-        </a>
-
-        <a href="access.html" class="card">
-            <h3>🗄️ Microsoft Access</h3>
-            <p>بناء وإدارة قواعد البيانات</p>
-        </a>
+        <a href="intro.html" class="card"><h3>⚙️ الميكرومعلوماتية</h3></a>
+        <a href="word.html" class="card"><h3>📄 Microsoft Word</h3></a>
+        <a href="excel.html" class="card"><h3>📊 Microsoft Excel</h3></a>
+        <a href="powerpoint.html" class="card"><h3>🎭 PowerPoint</h3></a>
     </div>
 
-    <div class="footer">
-        <p>للمساعدة أو الاستفسار تواصل معي:</p>
-        
-        <a href="https://www.instagram.com/volkov.shadow?igsh=MTIybGpjMmdsdHVpdA==" target="_blank" class="insta-btn">
-            volkov.shadow
-        </a>
-
-        <div class="dev-tag">
-            تم التطوير والبرمجة بواسطة خالد © 2026 <br>
-            جميع الحقوق محفوظة
-        </div>
-    </div>
+    <footer>
+        <p>&copy; 2026 جميع الحقوق محفوظة - أكاديمية خالد للميكرومعلوماتية</p>
+    </footer>
 
 </body>
 </html>
