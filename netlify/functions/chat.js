@@ -3,8 +3,8 @@ exports.handler = async (event) => {
         const { prompt } = JSON.parse(event.body);
         const apiKey = process.env.GEMINI_API_KEY;
 
-        // هذا الرابط المحدث والمضمون 100%
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        // الرابط المعتمد للنسخ المستقرة
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -14,7 +14,6 @@ exports.handler = async (event) => {
 
         const data = await response.json();
 
-        // فحص الأخطاء بدقة
         if (data.error) {
             return {
                 statusCode: 200,
@@ -22,6 +21,7 @@ exports.handler = async (event) => {
             };
         }
 
+        // استخراج النص بمرونة أكبر
         const aiReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "لم أستطع الحصول على رد، جرب مرة أخرى.";
 
         return {
