@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكتبة الاختصارات - أكاديمية خالد</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --word: #2b579a;
+            --excel: #217346;
+            --bg: #f8fafc;
+            --text: #1e293b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid var(--primary);
+        }
+
+        .card.word { border-color: var(--word); }
+        .card.excel { border-color: var(--excel); }
+
+        h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px 5px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+        }
+
+        code {
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+            color: #ef4444;
+        }
+
+        .description { color: #64748b; }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-btn">⬅️ العودة للرئيسية</a>
+    
+    <div class="header">
+        <h1>⌨️ مكتبة الاختصارات الذكية</h1>
+        <p>تعلم كيف تعمل بسرعة المحترفين (تعمل بدون إنترنت)</p>
+    </div>
+
+    <div class="grid">
+        <div class="card word">
+            <h2>📄 Microsoft Word</h2>
+            <table>
+                <tr><td><code>Ctrl + N</code></td><td class="description">مستند جديد</td></tr>
+                <tr><td><code>Ctrl + O</code></td><td class="description">فتح مستند موجود</td></tr>
+                <tr><td><code>Ctrl + S</code></td><td class="description">حفظ سريع</td></tr>
+                <tr><td><code>Ctrl + P</code></td><td class="description">طباعة</td></tr>
+                <tr><td><code>Ctrl + F</code></td><td class="description">بحث عن كلمة</td></tr>
+                <tr><td><code>Ctrl + H</code></td><td class="description">استبدال كلمة</td></tr>
+                <tr><td><code>Ctrl + Z</code></td><td class="description">تراجع عن خطأ</td></tr>
+                <tr><td><code>Ctrl + Y</code></td><td class="description">إعادة الفعل</td></tr>
+                <tr><td><code>Ctrl + B</code></td><td class="description">خط عريض (Bold)</td></tr>
+                <tr><td><code>Ctrl + I</code></td><td class="description">خط مائل</td></tr>
+                <tr><td><code>Ctrl + U</code></td><td class="description">تسطير النص</td></tr>
+                <tr><td><code>Ctrl + L</code></td><td class="description">محاذاة لليسار</td></tr>
+                <tr><td><code>Ctrl + R</code></td><td class="description">محاذاة لليمين</td></tr>
+                <tr><td><code>Ctrl + E</code></td><td class="description">توسيط النص</td></tr>
+                <tr><td><code>Ctrl + J</code></td><td class="description">ضبط الفقرة</td></tr>
+            </table>
+        </div>
+
+        <div class="card excel">
+            <h2>📊 Microsoft Excel</h2>
+            <table>
+                <tr><td><code>F2</code></td><td class="description">تعديل الخلية الحالية</td></tr>
+                <tr><td><code>Ctrl + ;</code></td><td class="description">إدراج التاريخ الحالي</td></tr>
+                <tr><td><code>Ctrl + Shift + :</code></td><td class="description">إدراج الوقت الحالي</td></tr>
+                <tr><td><code>Ctrl + Space</code></td><td class="description">تحديد العمود بالكامل</td></tr>
+                <tr><td><code>Shift + Space</code></td><td class="description">تحديد السطر بالكامل</td></tr>
+                <tr><td><code>Ctrl + +</code></td><td class="description">إضافة خلية/سطر/عمود</td></tr>
+                <tr><td><code>Ctrl + -</code></td><td class="description">حذف خلية/سطر/عمود</td></tr>
+                <tr><td><code>Ctrl + PageUp</code></td><td class="description">التنقل بين الشيتات</td></tr>
+                <tr><td><code>Alt + =</code></td><td class="description">جمع تلقائي (AutoSum)</td></tr>
+                <tr><td><code>Ctrl + 1</code></td><td class="description">تنسيق الخلايا</td></tr>
+                <tr><td><code>Ctrl + T</code></td><td class="description">تحويل البيانات لجدول</td></tr>
+                <tr><td><code>Ctrl + Arrow</code></td><td class="description">الانتقال لآخر خلية</td></tr>
+                <tr><td><code>Ctrl + D</code></td><td class="description">نسخ الخلية للأعلى</td></tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>💻 Windows & General</h2>
+            <table>
+                <tr><td><code>Win + D</code></td><td class="description">إظهار سطح المكتب</td></tr>
+                <tr><td><code>Win + E</code></td><td class="description">فتح مستكشف الملفات</td></tr>
+                <tr><td><code>Win + L</code></td><td class="description">قفل الكمبيوتر</td></tr>
+                <tr><td><code>Alt + Tab</code></td><td class="description">تبديل بين النوافذ</td></tr>
+                <tr><td><code>Ctrl + Shift + Esc</code></td><td class="description">مدير المهام (Task Manager)</td></tr>
+                <tr><td><code>Alt + F4</code></td><td class="description">إغلاق النافذة الحالية</td></tr>
+                <tr><td><code>Win + V</code></td><td class="description">تاريخ الحافظة (Clipboard)</td></tr>
+                <tr><td><code>Win + .</code></td><td class="description">لوحة الإيموجي</td></tr>
+                <tr><td><code>Ctrl + C</code></td><td class="description">نسخ</td></tr>
+                <tr><td><code>Ctrl + V</code></td><td class="description">لصق</td></tr>
+                <tr><td><code>Ctrl + X</code></td><td class="description">قص</td></tr>
+                <tr><td><code>Ctrl + A</code></td><td class="description">تحديد الكل</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
