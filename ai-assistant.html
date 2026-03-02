@@ -3,66 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مساعد خالد الذكي</title>
+    <title>مساعد خالد الذكي - أكاديمية خالد</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Cairo', sans-serif; background-color: #f4f7f6; margin: 0; display: flex; flex-direction: column; height: 100vh; }
-        .chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .message { max-width: 80%; padding: 12px 18px; border-radius: 15px; line-height: 1.6; }
-        .user-message { align-self: flex-start; background-color: #007bff; color: white; border-bottom-left-radius: 2px; }
-        .bot-message { align-self: flex-end; background-color: #e9ecef; color: #333; border-bottom-right-radius: 2px; }
-        .input-area { background: white; padding: 20px; display: flex; gap: 10px; border-top: 1px solid #ddd; }
-        input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 25px; outline: none; }
-        button { padding: 10px 25px; background: #007bff; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #0056b3; }
-        .loading { font-style: italic; color: #888; }
+        :root { --primary-color: #2c3e50; --accent-color: #3498db; }
+        body { font-family: 'Cairo', sans-serif; background-color: #f0f2f5; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        .header { background: var(--primary-color); color: white; padding: 15px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .message { max-width: 75%; padding: 12px 18px; border-radius: 20px; font-size: 16px; line-height: 1.5; position: relative; }
+        .user-message { align-self: flex-start; background-color: var(--accent-color); color: white; border-bottom-left-radius: 2px; }
+        .bot-message { align-self: flex-end; background-color: white; color: #333; border: 1px solid #ddd; border-bottom-right-radius: 2px; }
+        .input-area { background: white; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #ddd; }
+        input { flex: 1; padding: 12px 20px; border: 1px solid #ddd; border-radius: 30px; outline: none; font-family: 'Cairo'; }
+        button { background: var(--accent-color); color: white; border: none; padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button:hover { background: #2980b9; opacity: 0.9; }
+        .loading-dots { font-style: italic; color: #7f8c8d; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <h2 style="text-align: center; color: #333;">🤖 مساعد خالد الذكي</h2>
+    <div class="header">
+        <h2 style="margin:0;">🤖 مساعد خالد الذكي</h2>
+        <small>نسخة الأكاديمية الاحترافية</small>
+    </div>
 
     <div class="chat-container" id="chatContainer">
-        <div class="message bot-message">أهلاً بك في أكاديمية خالد! كيف يمكنني مساعدتك اليوم؟</div>
+        <div class="message bot-message">مرحباً بك في أكاديمية خالد! أنا مساعدك الذكي، كيف يمكنني مساعدتك في دروسك اليوم؟</div>
     </div>
 
     <div class="input-area">
-        <input type="text" id="userInput" placeholder="اكتب سؤالك هنا...">
-        <button onclick="sendMessage()">إرسال</button>
+        <input type="text" id="userInput" placeholder="اسألني أي شيء عن البرامج أو الدروس..." autocomplete="off">
+        <button id="sendBtn">إرسال</button>
     </div>
 
     <script>
         const chatContainer = document.getElementById('chatContainer');
         const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
 
         async function sendMessage() {
             const text = userInput.value.trim();
             if (!text) return;
 
-            // إضافة رسالة المستخدم للواجهة
+            // 1. عرض رسالة المستخدم
             appendMessage(text, 'user-message');
             userInput.value = '';
 
-            // إضافة رسالة انتظار
+            // 2. عرض رسالة "جاري التفكير"
             const loadingId = 'loading-' + Date.now();
-            appendMessage('جاري التفكير...', 'bot-message', loadingId);
+            appendMessage('انتظر لحظة، أنا أفكر...', 'bot-message', loadingId);
 
             try {
-                // الاتصال بسيرفر Netlify اللي خدمناه (بدون الحاجة لمفتاح هنا)
+                // 3. الاتصال بسيرفر Netlify الخاص بك
                 const response = await fetch('/.netlify/functions/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt: text })
                 });
 
+                if (!response.ok) throw new Error('خطأ في الاتصال');
+
                 const data = await response.json();
+                
+                // التأكد من استخراج النص بشكل صحيح من استجابة Gemini
                 const aiResponse = data.candidates[0].content.parts[0].text;
 
-                // استبدال رسالة الانتظار برد الذكاء الاصطناعي
+                // 4. تحديث رسالة الانتظار برد الذكاء الاصطناعي
                 document.getElementById(loadingId).innerText = aiResponse;
+
             } catch (error) {
-                document.getElementById(loadingId).innerText = "عذراً، حدث خطأ في الاتصال بالسيرفر.";
-                console.error(error);
+                console.error('Error:', error);
+                document.getElementById(loadingId).innerText = "عذراً يا خالد، واجهت مشكلة في الاتصال بالسيرفر. تأكد من إعدادات Netlify.";
             }
         }
 
@@ -75,7 +86,7 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        // إرسال بالضغط على Enter
+        sendBtn.addEventListener('click', sendMessage);
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMessage();
         });
