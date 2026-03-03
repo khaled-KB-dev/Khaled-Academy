@@ -3,77 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية خالد للميكرومعلوماتية</title>
+    <title>أكاديمية خالد للميكرومعلوماتية | الرئيسية</title>
     <style>
         :root {
-            --primary: #5ce1e6;
-            --bg-dark: #0f172a;
+            --bg: #0a192f;
+            --card-bg: #112240;
+            --cyan: #64ffda;
+            --text-main: #ccd6f6;
+            --text-dim: #8892b0;
+            --accent: #a855f7;
         }
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: var(--bg-dark);
-            color: white;
-            margin: 0;
-            padding: 20px;
-            /* حماية عملك: منع تحديد النصوص ومنع النسخ */
-            -webkit-user-select: none;
-            user-select: none;
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            margin: 0; padding: 20px; 
+            text-align: center;
+            overflow-x: hidden;
         }
-        .header { text-align: center; padding: 40px; }
-        .profile-img {
-            width: 150px; height: 150px; border-radius: 50%;
-            border: 4px solid var(--primary); object-fit: cover;
+
+        /* صورة الملف الشخصي */
+        .profile-pic { 
+            width: 140px; height: 140px; 
+            border-radius: 50%; 
+            border: 3px solid var(--cyan); 
+            margin-top: 20px;
+            object-fit: cover;
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
+            transition: 0.5s;
         }
-        h1 { color: var(--primary); display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .insta-link {
-            display: inline-block; color: var(--primary); text-decoration: none;
-            border: 1px solid var(--primary); padding: 8px 20px; border-radius: 25px; margin-top: 10px;
+        .profile-pic:hover { transform: rotate(5deg) scale(1.05); }
+
+        h1 { color: var(--cyan); margin: 15px 0; font-size: 2.2em; text-shadow: 0 0 10px rgba(100, 255, 218, 0.3); }
+
+        .insta-link { 
+            display: inline-block; 
+            color: var(--cyan); 
+            text-decoration: none; 
+            border: 1px solid var(--cyan); 
+            padding: 8px 25px; 
+            border-radius: 25px; 
+            margin-bottom: 40px;
+            transition: 0.3s;
+            font-weight: 500;
         }
-        .grid-container {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px; max-width: 1000px; margin: 40px auto;
+        .insta-link:hover { background: rgba(100, 255, 218, 0.1); transform: translateY(-2px); }
+
+        /* حاوية البطاقات */
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
+            gap: 20px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding-bottom: 100px;
         }
-        .card {
-            background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px;
-            text-align: center; text-decoration: none; color: white; border: 1px solid transparent;
+
+        .card { 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 15px; 
+            border: 1px solid #233554; 
+            color: #81e6d9; 
+            text-decoration: none; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
         }
-        .card:hover { border-color: var(--primary); transform: translateY(-5px); transition: 0.3s; }
+        .card:hover { 
+            transform: translateY(-10px); 
+            border-color: var(--cyan); 
+            background: #1d2d50;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+
+        /* تمييز البطاقات */
+        .card.ai { border: 2px solid var(--cyan); color: var(--cyan); }
+        .card.access { color: #ff4d4d; border-color: #ff4d4d; }
+        .card.alternatives { color: #ffa500; border-color: #ffa500; }
         
-        /* تنسيق الحقوق المحفوظة أسفل الصفحة */
-        footer {
-            text-align: center; padding: 40px 20px; margin-top: 60px;
-            border-top: 1px solid rgba(255,255,255,0.1); color: #94a3b8;
+        /* بطاقة التحدي البنفسجية */
+        .card.challenge-card {
+            border: 2px solid var(--accent);
+            background: linear-gradient(145deg, #112240, #1a0b2e);
         }
+        .card.challenge-card .title { color: var(--accent); font-size: 1.2em; font-weight: bold; }
+        .level-badge { background: var(--accent); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin-top: 10px; animation: pulse 2s infinite; }
+
+        /* بطاقة المختبر */
+        .card.tech-card { border: 2px solid var(--cyan); }
+        .tech-tag { color: var(--cyan); border: 1px solid var(--cyan); padding: 3px 10px; border-radius: 5px; font-size: 0.8em; margin-top: 10px; }
+
+        .card small { font-weight: normal; font-size: 0.85em; margin-top: 10px; color: var(--text-dim); }
+        .card .emoji { font-size: 2.5em; margin-bottom: 10px; }
+
+        /* من هو خالد */
+        .card.about { background: #1a3055; border: 1px dashed var(--cyan); }
+        .surprise { color: var(--cyan); font-weight: bold; margin-top: 10px; animation: blink 1.5s infinite; }
+
+        /* الأنيميشن */
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes scanAnim { 0% { top: 0; } 100% { top: 100%; } }
+
+        /* زر الماسح الضوئي العائم */
+        #dna-scanner {
+            position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; 
+            background: var(--accent); border-radius: 50%; display: flex; 
+            align-items: center; justify-content: center; cursor: pointer; 
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.5); z-index: 10000; 
+            transition: 0.4s; font-size: 28px;
+        }
+        #dna-scanner:hover { transform: scale(1.1) rotate(15deg); background: var(--cyan); }
+
+        /* شاشة التحليل */
+        #scan-overlay {
+            display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(10, 25, 47, 0.98); z-index: 10001; 
+            align-items: center; justify-content: center; flex-direction: column; 
+            color: var(--cyan); font-family: 'Courier New', monospace;
+        }
+        #scan-line { width: 100%; height: 3px; background: var(--cyan); position: absolute; top: 0; box-shadow: 0 0 20px var(--cyan); animation: scanAnim 2s linear infinite; }
+        
+        #scan-results {
+            display:none; text-align: right; background: var(--card-bg); padding: 30px; 
+            border-radius: 20px; border: 1px solid var(--accent); max-width: 450px; width: 90%;
+        }
+
+        footer { margin: 50px 0; color: var(--text-dim); font-size: 0.9em; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <img src="me.png" class="profile-img" alt="خالد">
-        <h1>أكاديمية خالد للميكرومعلوماتية <span style="color: #1DA1F2;">✔</span></h1>
-        <p>احتراف البرمجيات المكتبية بكل سهولة</p>
-        <a href="https://www.instagram.com/volkov.shadow?igsh=MTIybGpjMmdsdHVpdA==" target="_blank" class="insta-link">
-            📷 @volkov.shadow
-        </a>
-    </div>
+    <img src="me.png" alt="خالد KB" class="profile-pic">
+    
+    <h1>أكاديمية خالد للميكرومعلوماتية ✔️</h1>
+    
+    <a href="https://www.instagram.com/volkov.shadow" target="_blank" class="insta-link">
+        volkov.shadow@ 📷
+    </a>
 
     <div class="grid-container">
-        <a href="intro.html" class="card"><h3>⚙️ الميكرومعلوماتية</h3></a>
-        <a href="word.html" class="card"><h3>📄 Microsoft Word</h3></a>
-        <a href="excel.html" class="card"><h3>📊 Microsoft Excel</h3></a>
-        <a href="powerpoint.html" class="card"><h3>🎭 PowerPoint</h3></a>
-        <a href="shortcuts.html" class="card">
-    <h3>⌨️ اختصارات لوحة المفاتيح</h3>
-</a>
+        <a href="word.html" class="card"><span class="emoji">📝</span>Microsoft Word<small>تنسيق وتحرير المستندات</small></a>
+        <a href="excel.html" class="card"><span class="emoji">📊</span>Microsoft Excel<small>الجداول الحسابية والبيانات</small></a>
+        <a href="powerpoint.html" class="card"><span class="emoji">🎭</span>PowerPoint<small>العروض التقديمية الاحترافية</small></a>
+        <a href="access.html" class="card access"><span class="emoji">🗄️</span>Microsoft Access<small>قواعد البيانات المتقدمة</small></a>
+        
+        <a href="challenges.html" class="card challenge-card">
+            <span class="emoji">🎯</span>
+            <span class="title">تحدي الـ 50 مستوى</span>
+            <small>من الصفر إلى الاحتراف المطلق</small>
+            <div class="level-badge">ابدأ المغامرة الآن 🔥</div>
+        </a>
 
-<a href="ai-assistant.html" class="card">
-    <h3>🤖 مساعد خالد الذكي</h3>
-</a>
+        <a href="tech-lab.html" class="card tech-card">
+            <span class="emoji">🔬</span>
+            <span class="title">مختبر العتاد والبرمجيات</span>
+            <small>70 سؤالاً في الـ Hardware & Software</small>
+            <div class="tech-tag">مستوى: خبير نظم 🛠️</div>
+        </a>
+
+        <a href="alternatives.html" class="card alternatives"><span class="emoji">🎁</span>بدائل الأوفيس<small>برامج مجانية قوية جداً</small></a>
+        <a href="shortcuts.html" class="card"><span class="emoji">⌨️</span>اختصارات الكيبورد<small>لتسريع عملك 10 أضعاف</small></a>
+        <a href="ai.html" class="card ai"><span class="emoji">🤖</span>مساعد خالد الذكي<small>دردشة فورية بالذكاء الاصطناعي</small></a>
+
+        <div class="card about">
+            <span>👤 من هو خالد؟</span>
+            <small>مطور ومحب للتقنية، هدفي تبسيط المعلوماتية للجميع.</small>
+            <div class="surprise">مفاجآت جديدة قريباً... 🚀</div>
+        </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 جميع الحقوق محفوظة - أكاديمية خالد للميكرومعلوماتية</p>
-    </footer>
+    <footer>تم التطوير بكل فخر بواسطة المطور خالد KB &copy; 2026</footer>
+
+    <div id="toast-container" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;"></div>
+
+    <div id="dna-scanner" onclick="startScan()">🔍</div>
+
+    <div id="scan-overlay">
+        <div id="scan-line"></div>
+        <h2 id="scan-text">جاري فحص البصمة الرقمية...</h2>
+        <div id="scan-results">
+            <h3 style="color: var(--cyan); border-bottom: 1px solid var(--accent); padding-bottom: 10px;">📊 تقرير الكفاءة التقنية:</h3>
+            <p id="res-1">🔹 السرعة: جاري القياس...</p>
+            <p id="res-2">🔹 الخبرة: جاري التحليل...</p>
+            <p id="res-3">🔹 التصنيف: جاري المعالجة...</p>
+            <button onclick="closeScan()" style="background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 15px; font-weight: bold;">تحديث البيانات 🔄</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. نظام التنبيهات الذكي
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                background: #112240; color: #64ffda; border-left: 5px solid #a855f7;
+                padding: 15px 25px; margin-top: 10px; border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5); font-size: 0.9em;
+                animation: slideIn 0.5s ease-out; min-width: 250px; transition: 0.5s;
+            `;
+            toast.innerText = message;
+            document.getElementById('toast-container').appendChild(toast);
+            setTimeout(() => { 
+                toast.style.opacity = '0'; 
+                setTimeout(() => toast.remove(), 500); 
+            }, 4000);
+        }
+
+        setTimeout(() => showToast("مرحباً بك في أكاديمية خالد KB! 🎓"), 2000);
+        setTimeout(() => showToast("جرب 'تحدي الـ 50 مستوى' الآن! 🎯"), 7000);
+
+        // 2. نظام الماسح الضوئي DNA
+        function startScan() {
+            const overlay = document.getElementById('scan-overlay');
+            const results = document.getElementById('scan-results');
+            const text = document.getElementById('scan-text');
+            
+            overlay.style.display = 'flex';
+            results.style.display = 'none';
+            text.style.display = 'block';
+
+            setTimeout(() => { text.innerText = "جاري تحليل أنماط التفاعل..."; }, 1000);
+            setTimeout(() => { text.innerText = "جاري فحص ملفات الكفاءة..."; }, 2000);
+            
+            setTimeout(() => {
+                text.style.display = 'none';
+                results.style.display = 'block';
+                document.getElementById('scan-line').style.display = 'none';
+                
+                // نتائج افتراضية قوية (يمكن ربطها بـ LocalStorage لاحقاً)
+                document.getElementById('res-1').innerText = "🔹 السرعة التقنية: محترف (A+)";
+                document.getElementById('res-2').innerText = "🔹 دقة البيانات: 98.5%";
+                document.getElementById('res-3').innerText = "🔹 التصنيف: خبير نظم مستقبلي 🏆";
+            }, 3000);
+        }
+
+        function closeScan() {
+            document.getElementById('scan-overlay').style.display = 'none';
+            document.getElementById('scan-line').style.display = 'block';
+        }
+
+        // أنيميشن الإشعارات
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        `;
+        document.head.appendChild(style);
+    </script>
 
 </body>
 </html>

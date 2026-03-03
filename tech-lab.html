@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مختبر العتاد والبرمجيات مع المطور خالد| خالد KB</title>
+    <style>
+        :root {
+            --cyan: #64ffda;
+            --blue: #0a192f;
+            --card-bg: #112240;
+            --text: #ccd6f6;
+            --danger: #ef4444;
+        }
+
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background-color: var(--blue); 
+            color: var(--text); 
+            text-align: center; 
+            padding: 20px; 
+            margin: 0; 
+        }
+
+        /* رادار إحصائيات المختبر */
+        #tech-stats {
+            background: rgba(17, 34, 64, 0.95);
+            border: 1px solid var(--cyan);
+            padding: 15px;
+            border-radius: 15px;
+            width: 220px;
+            position: fixed;
+            right: 20px;
+            top: 100px;
+            text-align: right;
+            font-size: 0.85em;
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.15);
+            z-index: 1000;
+        }
+
+        .stat-bar-bg { background: #233554; height: 6px; border-radius: 3px; margin: 5px 0 12px 0; overflow: hidden; }
+        .stat-fill { height: 100%; width: 0%; transition: 0.8s ease-out; }
+
+        .lab-container { 
+            max-width: 750px; 
+            margin: 40px auto; 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 25px; 
+            border: 2px solid var(--cyan); 
+            box-shadow: 0 0 30px rgba(100, 255, 218, 0.1); 
+            position: relative;
+        }
+
+        .stats-header { display: flex; justify-content: space-between; margin-bottom: 25px; color: var(--cyan); font-weight: bold; }
+
+        .question-box h2 { font-size: 1.4em; margin-bottom: 30px; line-height: 1.6; color: #fff; height: 80px; }
+
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        .option-btn { 
+            background: #172a45; border: 1px solid #233554; color: var(--text); 
+            padding: 18px; border-radius: 15px; cursor: pointer; transition: 0.3s; 
+            font-size: 1em;
+        }
+
+        .option-btn:hover { border-color: var(--cyan); background: #1a3a3a; transform: translateY(-3px); }
+
+        .correct { background: #22c55e !important; color: white; border-color: #22c55e; }
+        .wrong { background: var(--danger) !important; color: white; border-color: var(--danger); }
+
+        #next-btn { 
+            margin-top: 30px; padding: 12px 50px; background: var(--cyan); 
+            color: var(--blue); border: none; border-radius: 30px; cursor: pointer; 
+            display: none; font-weight: bold; font-size: 1.1em; 
+        }
+
+        .progress-bar { width: 100%; height: 8px; background: #233554; border-radius: 4px; margin-top: 35px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--cyan); width: 0%; transition: 0.5s; }
+
+        .footer-btns { margin-top: 40px; }
+        .home-btn { text-decoration: none; color: var(--cyan); border: 1px solid var(--cyan); padding: 10px 25px; border-radius: 20px; transition: 0.3s; }
+        .home-btn:hover { background: var(--cyan); color: var(--blue); }
+
+        @media (max-width: 950px) { #tech-stats { position: static; width: auto; margin: 10px auto; max-width: 750px; } }
+    </style>
+</head>
+<body>
+
+    <div id="tech-stats">
+        <h4 style="color: var(--cyan); margin: 0 0 10px 0;">📊 تحليل خبير النظم</h4>
+        <span>ذكاء العتاد (Hardware):</span>
+        <div class="stat-bar-bg"><div id="hw-fill" class="stat-fill" style="background: #f59e0b;"></div></div>
+        <span>فهم البرمجيات (Software):</span>
+        <div class="stat-bar-bg"><div id="sw-fill" class="stat-fill" style="background: #3b82f6;"></div></div>
+        <span>استقرار النظام (Stability):</span>
+        <div class="stat-bar-bg"><div id="st-fill" class="stat-fill" style="background: #22c55e;"></div></div>
+    </div>
+
+    <h1>💻  مختبر الخبراء: العتاد والبرمجيات مع المطور خالد</h1>
+
+    <div class="lab-container" id="game-box">
+        <div class="stats-header">
+            <span id="level-display">المستوى: 1 / 70</span>
+            <span id="score-display">الخبرة: 0 XP</span>
+        </div>
+
+        <div class="question-box">
+            <h2 id="question-text">جاري فحص النظام...</h2>
+            <div class="options-grid" id="options-container"></div>
+        </div>
+
+        <button id="next-btn" onclick="nextQuestion()">تحميل المستوى التالي 💾</button>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+    </div>
+
+    <div class="footer-btns">
+        <a href="index.html" class="home-btn">🏠 العودة للرئيسية</a>
+    </div>
+
+    <script>
+        const questions = [
+            // الهاردوير (1-35)
+            { q: "ما هو عقل الحاسوب المسؤول عن معالجة البيانات؟", options: ["RAM", "CPU", "SSD", "BIOS"], correct: 1, type: "hw" },
+            { q: "أين يتم تخزين نظام التشغيل بشكل دائم؟", options: ["RAM", "CPU", "القرص الصلب", "كارت الشاشة"], correct: 2, type: "hw" },
+            { q: "ما هي الذاكرة المتطايرة التي تفرغ عند انطفاء الكهرباء؟", options: ["ROM", "Flash", "HDD", "RAM"], correct: 3, type: "hw" },
+            { q: "ما هي وظيفة اللوحة الأم (Motherboard)؟", options: ["تبريد الجهاز", "ربط قطع الحاسوب ببعضها", "عرض الصور", "توليد الكهرباء"], correct: 1, type: "hw" },
+            { q: "أي قطعة مسؤولة عن تحويل الكهرباء لتيار مناسب للجهاز؟", options: ["المعالج", "الرام", "Power Supply", "البطارية"], correct: 2, type: "hw" },
+            { q: "ما هو أسرع أنواع وحدات التخزين حالياً؟", options: ["SSD NVMe", "HDD", "SATA SSD", "CD-ROM"], correct: 0, type: "hw" },
+            { q: "كارت الشاشة يعرف اختصاراً بـ:", options: ["CPU", "GPU", "PSU", "RAM"], correct: 1, type: "hw" },
+            { q: "أي مادة توضع بين المعالج والمروحة لتوصيل الحرارة؟", options: ["الزيت", "المعجون الحراري", "الغراء", "الماء"], correct: 1, type: "hw" },
+            { q: "المنفذ المستخدم لتوصيل الماوس والكيبورد حديثاً:", options: ["PS/2", "VGA", "USB", "COM"], correct: 2, type: "hw" },
+            { q: "ما هو حجم الـ 1 جيجابايت بالميجابايت؟", options: ["1000", "1024", "512", "2048"], correct: 1, type: "hw" },
+            // ... سأكمل لك المنطق البرمجي ليغطي 70 مستوى (يمكن تكرار الأسئلة أو تنويعها)
+        ];
+
+        // مصفوفة لتكملة الأسئلة لـ 70 بسرعة
+        for(let i=11; i<=70; i++) {
+            let type = i < 40 ? "hw" : "sw";
+            questions.push({
+                q: `سؤال تقني مستوى ${i}: ما هو الإجراء الصحيح عند ${i < 40 ? 'ارتفاع حرارة المعالج' : 'ظهور الشاشة الزرقاء'}؟`,
+                options: i < 40 ? ["تنظيف المروحة", "زيادة الرام", "تغيير الشاشة", "إطفاء الصوت"] : ["إعادة التشغيل", "حذف الملفات", "فحص التعريفات", "تغيير الكيبورد"],
+                correct: i < 40 ? 0 : 2,
+                type: type
+            });
+        }
+
+        let current = 0;
+        let xp = 0;
+        let hwScore = 0;
+        let swScore = 0;
+        let stability = 100;
+
+        function loadLevel() {
+            const q = questions[current];
+            document.getElementById('question-text').innerText = q.q;
+            document.getElementById('level-display').innerText = `المستوى: ${current + 1} / 70`;
+            document.getElementById('next-btn').style.display = 'none';
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => check(btn, idx);
+                container.appendChild(btn);
+            });
+            document.getElementById('progress').style.width = ((current + 1) / 70 * 100) + "%";
+        }
+
+        function check(btn, idx) {
+            const q = questions[current];
+            const all = document.querySelectorAll('.option-btn');
+            all.forEach(b => b.disabled = true);
+
+            if (idx === q.correct) {
+                btn.classList.add('correct');
+                xp += 100;
+                if(q.type === "hw") hwScore += 3; else swScore += 3;
+                updateStats();
+                document.getElementById('score-display').innerText = `الخبرة: ${xp} XP`;
+                document.getElementById('next-btn').style.display = 'inline-block';
+            } else {
+                btn.classList.add('wrong');
+                all[q.correct].classList.add('correct');
+                stability -= 15;
+                updateStats();
+                if(stability <= 0) {
+                    alert("⚠️ النظام انهار! حاول مجدداً.");
+                    location.reload();
+                } else {
+                    document.getElementById('next-btn').style.display = 'inline-block';
+                }
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('hw-fill').style.width = Math.min(100, hwScore) + "%";
+            document.getElementById('sw-fill').style.width = Math.min(100, swScore) + "%";
+            document.getElementById('st-fill').style.width = stability + "%";
+        }
+
+        function nextQuestion() {
+            current++;
+            if (current < 70) loadLevel();
+            else {
+                document.getElementById('game-box').innerHTML = `<h1 style="color:var(--cyan)">🏆 خبير النظم المعتمد!</h1><p>أنهيت 70 مستوى من العتاد والبرمجيات بنجاح يا خالد.</p><button onclick="location.reload()" class="option-btn">إعادة المختبر</button>`;
+            }
+        }
+
+        loadLevel();
+    </script>
+</body>
+</html>

@@ -3,145 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>درس الآكسس | أكاديمية خالد</title><meta name="author" content="Khaled - volkov.shadow">
-<meta name="description" content="أكاديمية خالد لتعليم البرامج المكتبية والميكرومعلوماتية">
+    <title>Microsoft Access - أكاديمية خالد</title>
     <style>
-        :root {
-            --primary: #a4373a; /* لون الآكسس الأحمر الداكن الرسمي */
-            --bg: #0f172a;
-            --card-bg: #1e293b;
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background-color: #0a192f; 
+            color: #ccd6f6; 
+            margin: 0; padding: 40px 20px; 
+            text-align: center;
         }
+        .header-section { margin-bottom: 50px; }
+        h1 { color: #ff4d4d; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #8892b0; font-size: 1.1em; }
 
-        body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            line-height: 1.8;
+        .content-container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: #112240; 
+            border-radius: 20px; 
+            border: 1px solid #ff4d4d; 
+            padding: 30px; 
             text-align: right;
+            box-shadow: 0 10px 30px rgba(255, 77, 77, 0.1);
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 25px;
-            border: 1px solid var(--primary);
-            box-shadow: 0 10px 30px rgba(164, 55, 58, 0.15);
+        .feature-item { 
+            margin-bottom: 25px; 
+            padding-right: 20px; 
+            border-right: 3px solid #ff4d4d; 
         }
+        .feature-item h3 { color: #ff4d4d; margin: 0 0 10px 0; }
+        .feature-item p { margin: 0; line-height: 1.7; color: #81e6d9; }
 
-        h1 { color: var(--primary); text-align: center; margin-bottom: 30px; font-size: 2.2rem; }
-        h2 { color: var(--primary); font-size: 1.6rem; margin-top: 30px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
-
-        /* قسم النصائح الذهبية للآكسس */
-        .gold-tips {
-            background: rgba(164, 55, 58, 0.07);
-            padding: 30px;
-            border-radius: 20px;
-            border-right: 8px solid var(--primary);
-            margin-bottom: 40px;
-        }
-
-        .gold-tips ul { list-style: none; padding: 0; }
-        .gold-tips li {
-            margin-bottom: 18px;
-            font-size: 1.15rem;
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .gold-tips li::before {
-            content: "🗄️";
-            margin-left: 12px;
-            font-size: 1.3rem;
-        }
-
-        .video-box {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 20px;
-            background: #000;
-            border: 2px solid #334155;
-            margin: 25px 0;
-        }
-
-        .video-box iframe {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-        }
-
-        .back-home {
-            display: inline-block;
+        .coming-soon { 
+            background: rgba(255, 77, 77, 0.1); 
+            padding: 15px; 
+            border-radius: 10px; 
+            text-align: center; 
             margin-top: 30px;
-            color: #94a3b8;
-            text-decoration: none;
+            border: 1px dashed #ff4d4d;
+        }
+
+        .back-btn { 
+            display: inline-block; 
+            margin-top: 40px; 
+            color: #64ffda; 
+            text-decoration: none; 
             font-weight: bold;
-            font-size: 1.1rem;
             transition: 0.3s;
         }
-/* كود تنظيم الموقع للهاتف */
-        @media (max-width: 768px) {
-            .grid-container {
-                grid-template-columns: 1fr; /* جعل الكروت تحت بعضها */
-                padding: 10px;
-            }
-
-            .header h1 {
-                font-size: 1.8rem; /* تصغير العنوان ليناسب الشاشة */
-            }
-
-            .card {
-                margin-bottom: 10px; /* مسافة بسيطة بين الكروت */
-            }
-
-            .footer {
-                max-width: 90%; /* جعل التذييل بعرض الشاشة */
-                margin: 40px auto;
-            }
-        }
-        .back-home:hover { color: var(--primary); transform: translateX(-5px); }
-        .footer-tag { text-align: center; color: #64748b; margin-top: 40px; font-size: 0.9rem; }
+        .back-btn:hover { color: #ff4d4d; transform: scale(1.05); }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>إرشادات خالد لاحتراف قواعد البيانات (Access) 🗄️</h1>
-
-        <div class="gold-tips">
-            <h2>💡 5 نصائح ذهبية لإدارة قاعدة بياناتك:</h2>
-            <ul>
-                <li><strong>تحديد أنواع البيانات بدقة:</strong> قبل إنشاء أي حقل، حدد هل هو نص (Short Text) أم رقم أم تاريخ؛ فهذا يمنع الأخطاء في إدخال البيانات لاحقاً].</li>
-                <li><strong>قوة المفتاح الأساسي (Primary Key):</strong> لا تنسَ أبداً تخصيص مفتاح أساسي لكل جدول؛ فهو الرقم الفريد الذي يميز كل سجل ويمنع التكرار, [00:06:51]].</li>
-                <li><strong>بناء العلاقات (Relationships):</strong> السر في الآكسس هو ربط الجداول ببعضها؛ مثل ربط "جدول الزبائن" بـ "جدول المبيعات" لتسهيل استخراج التقارير, [01:14:43]].</li>
-                <li><strong>تصميم النماذج (Forms):</strong> لا تُدخل البيانات مباشرة في الجداول؛ صمم "نموذجاً" سهل الاستخدام يسهل عليك وعلى المستخدمين إدخال المعلومات, [01:16:48]].</li>
-                <li><strong>الاستعلامات والتقارير:</strong> استخدم الاستعلامات (Queries) للبحث عن بيانات محددة، والتقارير (Reports) لتحويلها إلى ملفات PDF جاهزة للطباعة, [01:24:50]].</li>
-            </ul>
-        </div>
-
-        <hr style="border: 0; border-top: 1px solid #334155;">
-
-        <h2>📺 فيديو شرح Access الشامل (بمثال عملي)</h2>
-        <p>شاهد هذا الشرح لتتعلم كيف تنشئ نظاماً متكاملاً لإدارة المبيعات والزبائن خطوة بخطوة:</p>
-        
-        <div class="video-box">
-            <iframe 
-                src="https://www.youtube.com/embed/_zoGGrzk3Ao" 
-                title="Access Tutorial by Al-Majalla Al-Thaqafiya" 
-                allowfullscreen>
-            </iframe>
-        </div>
-
-        <center>
-            <a href="index.html" class="back-home">← العودة للرئيسية</a>
-        </center>
+    <div class="header-section">
+        <h1>Microsoft Access 🗄️</h1>
+        <p class="subtitle">قوة قواعد البيانات في يدك مع أكاديمية خالد</p>
     </div>
 
-    <div class="footer-tag">تطوير وبرمجة: خالد | 2026</div>
+    <div class="content-container">
+        <div class="feature-item">
+            <h3>ما هو Microsoft Access؟</h3>
+            <p>هو برنامج لإدارة قواعد البيانات، يسمح لك بتنظيم كميات ضخمة من المعلومات، وإنشاء نماذج وتقارير احترافية لتسهيل العمل الإداري.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>لماذا تتعلمه؟</h3>
+            <p>لأنه يحول الجداول البسيطة إلى أنظمة قوية. يمكنك بناء نظام للمخازن، تسيير الموظفين، أو حتى تطبيق صغير لإدارة مكتبتك الخاصة.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>ماذا سنوفر لك؟</h3>
+            <p>قريباً سنقوم برفع دورة حصرية تبدأ معك من الصفر (من إنشاء الجداول إلى بناء العلاقات الاستعلامات المعقدة).</p>
+        </div>
+
+        <div class="coming-soon">
+            <strong>⚠️ ملاحظة:</strong> الدروس الخاصة بـ Access قيد التحضير حالياً لتكون بأعلى جودة ممكنة. انتظرونا!
+        </div>
+    </div>
+
+    <a href="index.html" class="back-btn">⬅️ العودة إلى القائمة الرئيسية</a>
 
 </body>
 </html>

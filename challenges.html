@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي الـ 50 مستوى مع المطور خالد | أكاديمية خالد KB</title>
+    <style>
+        :root {
+            --primary: #a855f7;
+            --secondary: #64ffda;
+            --bg: #0a192f;
+            --card-bg: #112240;
+            --text: #ccd6f6;
+        }
+
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            text-align: center; 
+            padding: 20px; 
+            margin: 0; 
+        }
+
+        /* رادار الأداء الحي */
+        #skill-radar {
+            background: rgba(17, 34, 64, 0.9);
+            border: 1px solid var(--secondary);
+            padding: 15px;
+            border-radius: 15px;
+            width: 200px;
+            position: fixed;
+            right: 20px;
+            top: 100px;
+            text-align: right;
+            font-size: 0.85em;
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.1);
+            z-index: 100;
+        }
+
+        .radar-bar-bg { background: #233554; height: 6px; border-radius: 3px; margin-top: 5px; margin-bottom: 10px; overflow: hidden; }
+        .radar-fill { height: 100%; width: 0%; transition: 0.8s ease-out; }
+
+        .challenge-container { 
+            max-width: 700px; 
+            margin: 40px auto; 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 25px; 
+            border: 2px solid var(--primary); 
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.2); 
+            position: relative;
+        }
+
+        .stats { display: flex; justify-content: space-between; margin-bottom: 25px; color: var(--primary); font-weight: bold; }
+
+        .question-box h2 { font-size: 1.5em; margin-bottom: 30px; line-height: 1.6; color: #fff; }
+
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        .option-btn { 
+            background: #172a45; border: 1px solid #233554; color: var(--text); 
+            padding: 18px; border-radius: 15px; cursor: pointer; transition: 0.3s; 
+            font-size: 1em; font-weight: 500;
+        }
+
+        .option-btn:hover { border-color: var(--primary); background: #1d1d3d; transform: translateY(-3px); }
+
+        .correct { background: #22c55e !important; color: white; border-color: #22c55e; box-shadow: 0 0 15px rgba(34, 197, 94, 0.4); }
+        .wrong { background: #ef4444 !important; color: white; border-color: #ef4444; }
+
+        #next-btn { 
+            margin-top: 30px; padding: 12px 50px; background: var(--primary); 
+            color: white; border: none; border-radius: 30px; cursor: pointer; 
+            display: none; font-weight: bold; font-size: 1.1em; 
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+        }
+
+        .progress-bar { width: 100%; height: 10px; background: #233554; border-radius: 5px; margin-top: 35px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: 0.5s; }
+
+        .footer-btns { margin-top: 40px; }
+        .home-btn { 
+            text-decoration: none; color: var(--secondary); border: 1px solid var(--secondary); 
+            padding: 10px 25px; border-radius: 20px; transition: 0.3s; font-size: 0.9em;
+        }
+        .home-btn:hover { background: var(--secondary); color: var(--bg); }
+
+        @media (max-width: 900px) { #skill-radar { position: static; width: auto; margin: 20px auto; max-width: 700px; } }
+    </style>
+</head>
+<body>
+
+    <div id="skill-radar">
+        <h4 style="color: var(--secondary); margin: 0 0 10px 0;">📊 تحليل الأداء الحي</h4>
+        <span>سرعة البديهة:</span>
+        <div class="radar-bar-bg"><div id="speed-fill" class="radar-fill" style="background: #f59e0b;"></div></div>
+        <span>دقة الأوفيس:</span>
+        <div class="radar-bar-bg"><div id="office-fill" class="radar-fill" style="background: #22c55e;"></div></div>
+        <span>مستوى الذكاء:</span>
+        <div class="radar-bar-bg"><div id="iq-fill" class="radar-fill" style="background: #3b82f6;"></div></div>
+    </div>
+
+    <h1>🏆 تحدي الـ 50 مستوى</h1>
+
+    <div class="challenge-container" id="game-box">
+        <div class="stats">
+            <span id="level-display">المستوى: 1 / 50</span>
+            <span id="score-display">النقاط: 0</span>
+        </div>
+
+        <div class="question-box">
+            <h2 id="question-text">محرك الأسئلة يستعد...</h2>
+            <div class="options-grid" id="options-container"></div>
+        </div>
+
+        <button id="next-btn" onclick="nextLevel()">المستوى القادم ➡️</button>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+    </div>
+
+    <div class="footer-btns">
+        <a href="index.html" class="home-btn">🏠 العودة للصفحة الرئيسية</a>
+    </div>
+
+    <script>
+        const questions = [
+            // (تم إدراج الـ 50 سؤالاً بشكل منظم هنا)
+            { q: "اختصار النسخ (Copy)؟", options: ["Ctrl+C", "Ctrl+V", "Ctrl+X", "Alt+C"], correct: 0, type: "office" },
+            { q: "رمز بداية المعادلات في Excel؟", options: ["+", "=", "@", "$"], correct: 1, type: "office" },
+            { q: "اختصار اللصق (Paste)؟", options: ["Ctrl+V", "Ctrl+P", "Ctrl+S", "Ctrl+Z"], correct: 0, type: "office" },
+            { q: "برنامج العروض التقديمية؟", options: ["Word", "Excel", "PowerPoint", "Access"], correct: 2, type: "office" },
+            { q: "اختصار التراجع (Undo)؟", options: ["Ctrl+Y", "Ctrl+U", "Ctrl+Z", "Ctrl+D"], correct: 2, type: "office" },
+            { q: "جعل الخط سميكاً (Bold)؟", options: ["Ctrl+B", "Ctrl+I", "Ctrl+U", "Ctrl+S"], correct: 0, type: "office" },
+            { q: "برنامج قواعد البيانات؟", options: ["Excel", "Access", "Word", "Outlook"], correct: 1, type: "office" },
+            { q: "اختصار فتح ملف جديد؟", options: ["Ctrl+O", "Ctrl+N", "Ctrl+W", "Ctrl+F"], correct: 1, type: "office" },
+            { q: "اختصار الحفظ (Save)؟", options: ["Ctrl+S", "Ctrl+G", "Ctrl+H", "Alt+S"], correct: 0, type: "office" },
+            { q: "اختصار الطباعة (Print)؟", options: ["Ctrl+T", "Ctrl+P", "Alt+P", "Ctrl+M"], correct: 1, type: "office" },
+            { q: "دالة الجمع في Excel؟", options: ["COUNT", "AVERAGE", "SUM", "MIN"], correct: 2, type: "office" },
+            { q: "اختصار إضافة شريحة في PowerPoint؟", options: ["Ctrl+N", "Ctrl+M", "Ctrl+S", "Ctrl+Enter"], correct: 1, type: "office" },
+            { q: "اختصار البحث عن كلمة (Find)؟", options: ["Ctrl+H", "Ctrl+F", "Ctrl+G", "Ctrl+B"], correct: 1, type: "office" },
+            { q: "تثبيت الخلية في Excel نستخدم؟", options: ["$", "#", "@", "%"], correct: 0, type: "office" },
+            { q: "اختصار توسيط النص؟", options: ["Ctrl+L", "Ctrl+R", "Ctrl+E", "Ctrl+J"], correct: 2, type: "office" },
+            { q: "دالة المتوسط الحسابي؟", options: ["SUM", "MAX", "AVERAGE", "MIN"], correct: 2, type: "office" },
+            { q: "اختصار الاستبدال (Replace)؟", options: ["Ctrl+H", "Ctrl+R", "Ctrl+F", "Ctrl+K"], correct: 0, type: "office" },
+            { q: "لاحقة ملف Word الحديث؟", options: [".txt", ".docx", ".xlsx", ".pdf"], correct: 1, type: "office" },
+            { q: "اختصار اختيار الكل (Select All)؟", options: ["Ctrl+A", "Ctrl+Alt+A", "Alt+A", "Ctrl+T"], correct: 0, type: "office" },
+            { q: "في Access، المفتاح الفريد يسمى؟", options: ["Foreign Key", "Main Key", "Primary Key", "Super Key"], correct: 2, type: "office" },
+            { q: "اختصار الارتباط التشعبي (Hyperlink)؟", options: ["Ctrl+L", "Ctrl+K", "Ctrl+H", "Ctrl+G"], correct: 1, type: "office" },
+            { q: "دالة البحث العمودي في Excel؟", options: ["LOOKUP", "VLOOKUP", "HLOOKUP", "SEARCH"], correct: 1, type: "office" },
+            { q: "بدء العرض في PowerPoint من البداية؟", options: ["F1", "F5", "Shift+F5", "F11"], correct: 1, type: "office" },
+            { q: "دالة حساب عدد الخلايا الرقمية؟", options: ["COUNT", "COUNTA", "COUNTIF", "SUM"], correct: 0, type: "office" },
+            { q: "اختصار فتح الـ Font في Word؟", options: ["Ctrl+D", "Ctrl+F", "Ctrl+T", "Alt+F"], correct: 0, type: "office" },
+            { q: "في Access، لربط الجداول نستخدم؟", options: ["Links", "Forms", "Relationships", "Reports"], correct: 2, type: "office" },
+            { q: "اختصار إغلاق البرنامج؟", options: ["Alt+F4", "Ctrl+F4", "Shift+Esc", "Alt+Esc"], correct: 0, type: "office" },
+            { q: "دالة تعطي أكبر قيمة؟", options: ["MIN", "LARGE", "MAX", "HIGH"], correct: 2, type: "office" },
+            { q: "اختصار الانتقال لأول المستند؟", options: ["Ctrl+Home", "Home", "Alt+Home", "Shift+Home"], correct: 0, type: "office" },
+            { q: "أي كائن في Access يعرض البيانات مطبوعة؟", options: ["Forms", "Queries", "Tables", "Reports"], correct: 3, type: "office" },
+            { q: "دالة IF تستخدم لـ؟", options: ["الجمع", "الشرط", "الترتيب", "البحث"], correct: 1, type: "office" },
+            { q: "اختصار إدراج وقت حالي في Excel؟", options: ["Ctrl+;", "Ctrl+Shift+:", "Ctrl+T", "Alt+T"], correct: 1, type: "office" },
+            { q: "ما هي دالة ربط النصوص؟", options: ["CONCATENATE", "LINK", "JOIN", "ADD"], correct: 0, type: "office" },
+            { q: "في Excel، ماذا تفعل دالة COUNTIF؟", options: ["العد", "الجمع بشرط", "العد بشرط", "المتوسط"], correct: 2, type: "office" },
+            { q: "اختصار معاينة قبل الطباعة؟", options: ["Ctrl+P", "Ctrl+F2", "Ctrl+F1", "Alt+P"], correct: 1, type: "office" },
+            { q: "في Access، الاستعلام يسمى؟", options: ["Table", "Form", "Query", "Report"], correct: 2, type: "office" },
+            { q: "اختصار تحويل النص لحروف كبيرة؟", options: ["Shift+F3", "Ctrl+U", "Alt+C", "F2"], correct: 0, type: "office" },
+            { q: "دالة تعطي أصغر قيمة؟", options: ["LOW", "SMALL", "MIN", "MAX"], correct: 2, type: "office" },
+            { q: "اختصار إخفاء عمود في Excel؟", options: ["Ctrl+0", "Ctrl+9", "Ctrl+H", "Alt+H"], correct: 0, type: "office" },
+            { q: "اختصار إخفاء سطر في Excel؟", options: ["Ctrl+0", "Ctrl+9", "Ctrl+L", "Alt+S"], correct: 1, type: "office" },
+            { q: "أداة تحليل البيانات الضخمة؟", options: ["Pivot Table", "Slicer", "Filter", "Chart"], correct: 0, type: "office" },
+            { q: "اختصار فتح الـ VBA المحرر؟", options: ["Alt+F8", "Alt+F11", "Ctrl+F11", "Shift+F11"], correct: 1, type: "office" },
+            { q: "دالة VLOOKUP، ماذا يعني حرف V؟", options: ["Value", "Virtual", "Vertical", "Visual"], correct: 2, type: "office" },
+            { q: "في Access، نوع البيانات للصور؟", options: ["Text", "Number", "OLE Object", "Memo"], correct: 2, type: "office" },
+            { q: "اختصار تكرار آخر عملية؟", options: ["F4", "F2", "Ctrl+R", "Alt+Enter"], correct: 0, type: "office" },
+            { q: "دالة تقوم بتبديل الأسطر لأعمدة؟", options: ["TRANSPOSE", "REVERSE", "SWITCH", "CHANGE"], correct: 0, type: "office" },
+            { q: "ما هو اختصار 'تسمية الخلية'؟", options: ["Ctrl+F3", "Alt+N", "F3", "Ctrl+L"], correct: 0, type: "office" },
+            { q: "أداة لتصفية البيانات بشكل مرئي؟", options: ["Filter", "Slicer", "Search", "Table"], correct: 1, type: "office" },
+            { q: "اختصار إدراج تاريخ اليوم؟", options: ["Ctrl+;", "Ctrl+:", "Alt+D", "Shift+D"], correct: 0, type: "office" },
+            { q: "من هو مطور هذا الموقع؟", options: ["خالد KB", "مجهول", "بوت", "شركة"], correct: 0, type: "office" }
+        ];
+
+        let currentLevel = 0;
+        let score = 0;
+        let startTime;
+        let officeAcc = 0;
+
+        function loadLevel() {
+            startTime = Date.now();
+            const qData = questions[currentLevel];
+            document.getElementById('question-text').innerText = qData.q;
+            document.getElementById('level-display').innerText = `المستوى: ${currentLevel + 1} / 50`;
+            document.getElementById('next-btn').style.display = 'none';
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            qData.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => check(btn, index);
+                container.appendChild(btn);
+            });
+            document.getElementById('progress').style.width = ((currentLevel + 1) / 50 * 100) + "%";
+        }
+
+        function check(btn, index) {
+            const timeTaken = (Date.now() - startTime) / 1000;
+            const correctIndex = questions[currentLevel].correct;
+            const allBtns = document.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (index === correctIndex) {
+                btn.classList.add('correct');
+                score += 20;
+                officeAcc += 2;
+                updateRadar(timeTaken);
+                document.getElementById('score-display').innerText = `النقاط: ${score}`;
+                document.getElementById('next-btn').style.display = 'inline-block';
+            } else {
+                btn.classList.add('wrong');
+                allBtns[correctIndex].classList.add('correct');
+                setTimeout(() => {
+                    alert("⚠️ ركز يا بطل! لجنة التحكيم تراقب أداءك. حاول من جديد.");
+                    resetGame();
+                }, 1500);
+            }
+        }
+
+        function updateRadar(time) {
+            // حساب السرعة (كلما قل الوقت زاد البار)
+            let speed = Math.max(10, 100 - (time * 10));
+            document.getElementById('speed-fill').style.width = speed + "%";
+            document.getElementById('office-fill').style.width = Math.min(100, officeAcc) + "%";
+            document.getElementById('iq-fill').style.width = Math.min(100, (currentLevel * 2) + 10) + "%";
+        }
+
+        function resetGame() {
+            currentLevel = 0; score = 0; officeAcc = 0;
+            document.getElementById('score-display').innerText = `النقاط: 0`;
+            document.getElementById('speed-fill').style.width = "0%";
+            document.getElementById('office-fill').style.width = "0%";
+            document.getElementById('iq-fill').style.width = "0%";
+            loadLevel();
+        }
+
+        function nextLevel() {
+            currentLevel++;
+            if (currentLevel < 50) { loadLevel(); }
+            else {
+                document.getElementById('game-box').innerHTML = `
+                    <h1 style="color:var(--secondary)">🏆 أسطورة الابتكار خالد KB!</h1>
+                    <p>لقد أنهيت 50 تحدياً بمستوى ذكاء خارق.</p>
+                    <button onclick="location.reload()" class="option-btn">تحدي جديد</button>
+                `;
+            }
+        }
+
+        loadLevel();
+    </script>
+</body>
+</html>
