@@ -257,5 +257,33 @@
 
         loadLevel();
     </script>
-</body>
+
+</body><script>
+    // 1. منع القائمة اليمنى (Right Click)
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        showToast("⚠️ عذراً.. حقوق الكود محفوظة لأكاديمية خالد KB");
+    });
+
+    // 2. منع اختصارات لوحة المفاتيح (F12, Ctrl+U, Ctrl+Shift+I)
+    document.onkeydown = function(e) {
+        // منع F12
+        if (event.keyCode == 123) { return false; }
+        
+        // منع Ctrl+Shift+I (المطورين)
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; }
+        
+        // منع Ctrl+Shift+J (المطورين)
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; }
+        
+        // منع Ctrl+U (عرض كود المصدر)
+        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; }
+
+        // منع Ctrl+S (حفظ الصفحة)
+        if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) { return false; }
+    };
+
+    // 3. منع تصوير الشاشة أو السحب (اختياري)
+    document.styleSheets[0].insertRule('body { user-select: none; -webkit-user-select: none; }', 0);
+</script>
 </html>
