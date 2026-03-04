@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حقيبة الأدوات التقنية | خالد KB</title>
+    <style>
+        :root {
+            --primary: #f59e0b; /* اللون البرتقالي المعتمد للحقيبة */
+            --bg: #0a192f;
+            --card-bg: #112240;
+            --text: #ccd6f6;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(rgba(245, 158, 11, 0.1), transparent);
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 { color: var(--primary); font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #8892b0; font-size: 1.1em; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid #233554;
+            border-radius: 15px;
+            padding: 20px;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .tool-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .tool-icon { font-size: 40px; margin-bottom: 15px; }
+        .tool-name { color: var(--primary); font-size: 1.4em; margin-bottom: 8px; font-weight: bold; }
+        .tool-desc { color: #a8b2d1; font-size: 0.9em; margin-bottom: 20px; height: 50px; }
+
+        .download-btn {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            text-align: center;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .download-btn:hover {
+            background: var(--primary);
+            color: var(--bg);
+        }
+
+        .back-home {
+            display: block;
+            width: fit-content;
+            margin: 40px auto;
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--primary);
+            padding-bottom: 5px;
+        }
+
+        /* تنسيق قسم Ninite الخاص */
+        .special-box {
+            grid-column: 1 / -1;
+            background: linear-gradient(45deg, #1e3a8a, #1e40af);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+            border: 2px dashed var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🧰 حقيبة المطور خالد الأدوات التقنية</h1>
+        <p class="subtitle">كل ما تحتاجه لإعداد حاسوبك من الصفر بروابط رسمية ومباشرة</p>
+    </div>
+
+    <div class="grid">
+        <div class="tool-card">
+            <div>
+                <div class="tool-icon">📦</div>
+                <div class="tool-name">WinRAR</div>
+                <div class="tool-desc">أقوى أداة لفك ضغط الملفات وإدارتها.</div>
+            </div>
+            <a href="https://www.win-rar.com/postdownload.html?&L=0" target="_blank" class="download-btn">تحميل مباشر</a>
+        </div>
+
+        <div class="tool-card">
+            <div>
+                <div class="tool-icon">⚙️</div>
+                <div class="tool-name">Driver Booster</div>
+                <div class="tool-desc">تحديث جميع تعريفات الجهاز (Drivers) بضغطة زر.</div>
+            </div>
+            <a href="https://www.iobit.com/en/driver-booster.php" target="_blank" class="download-btn">تحميل رسمي</a>
+        </div>
+
+        <div class="tool-card">
+            <div>
+                <div class="tool-icon">🎮</div>
+                <div class="tool-name">DirectX Runtime</div>
+                <div class="tool-desc">ضروري جداً لتشغيل الألعاب وبرامج التصميم.</div>
+            </div>
+            <a href="https://www.microsoft.com/en-us/download/details.aspx?id=35" target="_blank" class="download-btn">من مايكروسوفت</a>
+        </div>
+
+        <div class="tool-card">
+            <div>
+                <div class="tool-icon">🔄</div>
+                <div class="tool-name">VC++ Redist</div>
+                <div class="tool-desc">حزمة ملفات النظام المفقودة (AIO) لتشغيل البرامج.</div>
+            </div>
+            <a href="https://github.com/abbodi1406/vcredist/releases" target="_blank" class="download-btn">تحميل الحزمة الشاملة</a>
+        </div>
+
+        <div class="tool-card">
+            <div>
+                <div class="tool-icon">🎬</div>
+                <div class="tool-name">VLC Player</div>
+                <div class="tool-desc">مشغل الفيديو الذي لا يعجز عن أي صيغة.</div>
+            </div>
+            <a href="https://www.videolan.org/vlc/download-windows.html" target="_blank" class="download-btn">تحميل مباشر</a>
+        </div>
+
+        <div class="tool-card">
+            <div>
+                <div class="tool-icon">📥</div>
+                <div class="tool-name">IDM</div>
+                <div class="tool-desc">أسرع أداة لتحميل الملفات من الإنترنت.</div>
+            </div>
+            <a href="https://www.internetdownloadmanager.com/download.html" target="_blank" class="download-btn">تجربة رسمية</a>
+        </div>
+
+        <div class="special-box">
+            <h2>🚀 نصيحة خالد KB: استخدم Ninite</h2>
+            <p>بدلاً من تحميل كل برنامج وحده، اختر كل ما تريد من هذا الموقع وسيقوم بتثبيتها جميعاً بصمت وبضغطة زر واحدة!</p>
+            <a href="https://ninite.com/" target="_blank" class="download-btn" style="background: white; border-color: white; color: #1e3a8a;">انتقل إلى Ninite الآن</a>
+        </div>
+    </div>
+
+    <a href="index.html" class="back-home">⬅️ العودة إلى أكاديمية خالد KB</a>
+
+    <script>
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) return false;
+        };
+    </script>
+</body>
+</html>

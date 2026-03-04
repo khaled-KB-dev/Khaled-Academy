@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مساعد خالد KB | PRO FX 🔥</title>
+    <style>
+        :root {
+            --gold: #ffd700;
+            --fire: #ff4500;
+            --dark-bg: #050505;
+        }
+
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: var(--dark-bg); 
+            display: flex; justify-content: center; align-items: center; 
+            font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden;
+        }
+
+        /* حاوية الخلفية المتحركة */
+        #fireCanvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
+        }
+
+        .chat-container { 
+            width: 480px; max-width: 95%; height: 85vh;
+            background: rgba(10, 10, 10, 0.9); border-radius: 30px; 
+            display: flex; flex-direction: column; 
+            border: 2px solid var(--gold); 
+            box-shadow: 0 0 50px rgba(255, 69, 0, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative; z-index: 10;
+        }
+
+        .chat-header { 
+            padding: 20px; text-align: center; color: var(--gold); 
+            font-weight: bold; font-size: 1.4em; border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            text-shadow: 0 0 10px var(--fire);
+        }
+
+        #chat-window { 
+            flex: 1; padding: 25px; overflow-y: auto; 
+            display: flex; flex-direction: column; gap: 15px; scrollbar-width: none;
+        }
+        #chat-window::-webkit-scrollbar { display: none; }
+
+        .message { padding: 14px 20px; border-radius: 20px; font-size: 15px; line-height: 1.6; max-width: 85%; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
+
+        .user-msg { background: #1a1a1a; color: #fff; align-self: flex-start; border: 1px solid #333; border-bottom-right-radius: 4px; }
+        .ai-msg { background: var(--gold); color: #000; align-self: flex-end; font-weight: 500; border-bottom-left-radius: 4px; box-shadow: 0 5px 15px rgba(255, 69, 0, 0.3); }
+
+        .input-area { display: flex; padding: 20px; background: rgba(0, 0, 0, 0.5); border-top: 1px solid rgba(255, 215, 0, 0.2); border-radius: 0 0 30px 30px; }
+        input { flex: 1; background: #111; border: 1px solid #333; color: #fff; padding: 15px; border-radius: 15px; outline: none; }
+        input:focus { border-color: var(--gold); }
+        button { background: var(--gold); color: #000; border: none; padding: 0 25px; border-radius: 15px; margin-right: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button:hover { background: #fff; transform: scale(1.05); }
+    </style>
+</head>
+<body>
+
+<canvas id="fireCanvas"></canvas>
+
+<div class="chat-container">
+    <div class="chat-header">🔥 KB AI PRO النسخة المطورة لخالد</div>
+    <div id="chat-window">
+        <div class="message ai-msg">مرحبا بكم في النسخة المطورة للمطور خالد. أنا جاهز لمساعدتك ! 🚀</div>
+    </div>
+    <div class="input-area">
+        <input type="text" id="user-input" placeholder="اسأل المساعد الناري..." autocomplete="off">
+        <button id="send-btn">إرسال</button>
+    </div>
+</div>
+
+<script>
+    // --- كود تأثير شظايا النار (Fire Particles) ---
+    const canvas = document.getElementById('fireCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height + Math.random() * 100;
+            this.size = Math.random() * 3 + 1;
+            this.speedY = Math.random() * 2 + 1;
+            this.speedX = (Math.random() - 0.5) * 2;
+            this.color = `rgba(255, ${Math.floor(Math.random() * 150 + 50)}, 0, ${Math.random() * 0.5 + 0.5})`;
+        }
+        update() {
+            this.y -= this.speedY;
+            this.x += this.speedX;
+            if (this.y < 0) {
+                this.y = canvas.height + 10;
+                this.x = Math.random() * canvas.width;
+            }
+        }
+        draw() {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function init() {
+        for (let i = 0; i < 100; i++) { particles.push(new Particle()); }
+    }
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+    init(); animate();
+
+    // --- كود الشات والذكاء (كما في كودك) ---
+    const chatWindow = document.getElementById('chat-window');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    async function sendMessage() {
+        const text = userInput.value.trim();
+        if (!text) return;
+        addMessage(text, 'user-msg');
+        userInput.value = "جاري التفكير...";
+        userInput.disabled = true;
+
+        if (text.includes("خالد") || text.includes("مبرمج")) {
+            setTimeout(() => {
+                addMessage("تم تطويري بواسطة المطور خالد KB صاحب الأكاديمية. 🇩🇿", 'ai-msg');
+                resetInput();
+            }, 600);
+            return;
+        }
+
+        try {
+            const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(text)}?model=openai&arabic=true`);
+            const aiReply = await response.text();
+            addMessage(aiReply, 'ai-msg');
+        } catch (e) {
+            addMessage("⚠️ خطأ في الاتصال بالسيرفر.", 'ai-msg');
+        }
+        resetInput();
+    }
+
+    function resetInput() { userInput.value = ""; userInput.disabled = false; userInput.focus(); chatWindow.scrollTop = chatWindow.scrollHeight; }
+    function addMessage(text, className) {
+        const div = document.createElement('div');
+        div.className = `message ${className}`;
+        div.innerHTML = text;
+        chatWindow.appendChild(div);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+    // حماية الكود
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.onkeydown = e => { if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false; };
+</script>
+</body>
+</html>

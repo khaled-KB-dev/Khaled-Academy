@@ -6,12 +6,14 @@
     <title>أكاديمية خالد للميكرومعلوماتية | الرئيسية</title>
     <style>
         :root {
-            --bg: #0a192f;
+            /* تعديل الخلفية لتصبح سوداء ملكية */
+            --bg: #000000; 
             --card-bg: #112240;
             --cyan: #64ffda;
             --text-main: #ccd6f6;
             --text-dim: #8892b0;
             --accent: #a855f7;
+            --fire-gold: #ffd700;
         }
 
         body { 
@@ -21,6 +23,18 @@
             margin: 0; padding: 20px; 
             text-align: center;
             overflow-x: hidden;
+            position: relative; /* مهم لعمل الـ Canvas */
+        }
+
+        /* --- تأثير شظايا النار الخلفية --- */
+        #fireCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* خلف كل العناصر */
+            pointer-events: none;
         }
 
         /* صورة الملف الشخصي */
@@ -32,10 +46,11 @@
             object-fit: cover;
             box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
             transition: 0.5s;
+            position: relative; z-index: 2;
         }
         .profile-pic:hover { transform: rotate(5deg) scale(1.05); }
 
-        h1 { color: var(--cyan); margin: 15px 0; font-size: 2.2em; text-shadow: 0 0 10px rgba(100, 255, 218, 0.3); }
+        h1 { color: var(--cyan); margin: 15px 0; font-size: 2.2em; text-shadow: 0 0 10px rgba(100, 255, 218, 0.3); position: relative; z-index: 2; }
 
         .insta-link { 
             display: inline-block; 
@@ -47,6 +62,7 @@
             margin-bottom: 40px;
             transition: 0.3s;
             font-weight: 500;
+            position: relative; z-index: 2;
         }
         .insta-link:hover { background: rgba(100, 255, 218, 0.1); transform: translateY(-2px); }
 
@@ -58,10 +74,11 @@
             max-width: 1200px; 
             margin: 0 auto; 
             padding-bottom: 100px;
+            position: relative; z-index: 2;
         }
 
         .card { 
-            background: var(--card-bg); 
+            background: rgba(17, 34, 64, 0.8); /* جعلها شفافة قليلاً لرؤية النار */
             padding: 30px; 
             border-radius: 15px; 
             border: 1px solid #233554; 
@@ -71,7 +88,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
+            backdrop-filter: blur(5px);
         }
         .card:hover { 
             transform: translateY(-10px); 
@@ -80,63 +97,73 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.4);
         }
 
-        /* تمييز البطاقات */
+        /* بقية تنسيقات البطاقات كما هي تماماً */
         .card.ai { border: 2px solid var(--cyan); color: var(--cyan); }
         .card.access { color: #ff4d4d; border-color: #ff4d4d; }
         .card.alternatives { color: #ffa500; border-color: #ffa500; }
-        
-        /* بطاقة التحدي البنفسجية */
-        .card.challenge-card {
-            border: 2px solid var(--accent);
-            background: linear-gradient(145deg, #112240, #1a0b2e);
-        }
+        .card.challenge-card { border: 2px solid var(--accent); background: linear-gradient(145deg, rgba(17, 34, 64, 0.9), rgba(26, 11, 46, 0.9)); }
         .card.challenge-card .title { color: var(--accent); font-size: 1.2em; font-weight: bold; }
         .level-badge { background: var(--accent); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin-top: 10px; animation: pulse 2s infinite; }
-
-        /* بطاقة المختبر */
         .card.tech-card { border: 2px solid var(--cyan); }
         .tech-tag { color: var(--cyan); border: 1px solid var(--cyan); padding: 3px 10px; border-radius: 5px; font-size: 0.8em; margin-top: 10px; }
-
         .card small { font-weight: normal; font-size: 0.85em; margin-top: 10px; color: var(--text-dim); }
         .card .emoji { font-size: 2.5em; margin-bottom: 10px; }
-
-        /* من هو خالد */
-        .card.about { background: #1a3055; border: 1px dashed var(--cyan); }
+        .card.about { background: rgba(26, 48, 85, 0.8); border: 1px dashed var(--cyan); }
         .surprise { color: var(--cyan); font-weight: bold; margin-top: 10px; animation: blink 1.5s infinite; }
 
-        /* الأنيميشن */
+        /* AI PRO CARD Style */
+        .ai-pro-card {
+            background: linear-gradient(145deg, #1a1a1a, #000) !important;
+            border: 2px solid #ffd700 !important;
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: 0.4s;
+        }
+        .gold-text { color: #ffd700 !important; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); font-weight: bold; }
+        .gold-shimmer { position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent); transform: rotate(45deg); animation: shimmer 4s infinite; }
+        @keyframes shimmer { 0% { transform: translate(-30%, -30%) rotate(45deg); } 100% { transform: translate(30%, 30%) rotate(45deg); } }
+        .pro-badge { margin-top: 15px; background: #ffd700; color: #000; padding: 4px 12px; border-radius: 20px; font-size: 0.7em; font-weight: bold; }
+
+        /* الأنيميشن والماسح الضوئي */
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes scanAnim { 0% { top: 0; } 100% { top: 100%; } }
 
-        /* زر الماسح الضوئي العائم */
-        #dna-scanner {
-            position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; 
-            background: var(--accent); border-radius: 50%; display: flex; 
-            align-items: center; justify-content: center; cursor: pointer; 
-            box-shadow: 0 0 25px rgba(168, 85, 247, 0.5); z-index: 10000; 
-            transition: 0.4s; font-size: 28px;
-        }
+        #dna-scanner { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 25px rgba(168, 85, 247, 0.5); z-index: 10000; transition: 0.4s; font-size: 28px; }
         #dna-scanner:hover { transform: scale(1.1) rotate(15deg); background: var(--cyan); }
-
-        /* شاشة التحليل */
-        #scan-overlay {
-            display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(10, 25, 47, 0.98); z-index: 10001; 
-            align-items: center; justify-content: center; flex-direction: column; 
-            color: var(--cyan); font-family: 'Courier New', monospace;
-        }
+        #scan-overlay { display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 25, 47, 0.98); z-index: 10001; align-items: center; justify-content: center; flex-direction: column; color: var(--cyan); font-family: 'Courier New', monospace; }
         #scan-line { width: 100%; height: 3px; background: var(--cyan); position: absolute; top: 0; box-shadow: 0 0 20px var(--cyan); animation: scanAnim 2s linear infinite; }
-        
-        #scan-results {
-            display:none; text-align: right; background: var(--card-bg); padding: 30px; 
-            border-radius: 20px; border: 1px solid var(--accent); max-width: 450px; width: 90%;
-        }
+        #scan-results { display:none; text-align: right; background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--accent); max-width: 450px; width: 90%; }
 
-        footer { margin: 50px 0; color: var(--text-dim); font-size: 0.9em; }
+        footer { margin: 50px 0; color: var(--text-dim); font-size: 0.9em; position: relative; z-index: 2; }
+
+        /* تخصيص الـ Toast ليتناسب مع الخلفية السوداء */
+        .toast-item {
+            background: rgba(0, 0, 0, 0.8) !important;
+            color: var(--cyan) !important;
+            border: 1px solid var(--fire-gold) !important;
+            padding: 15px 25px;
+            margin-top: 10px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+            font-size: 0.9em;
+            backdrop-filter: blur(8px);
+            animation: slideIn 0.5s ease-out;
+            min-width: 260px;
+            transition: 0.5s;
+        }
+        @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     </style>
 </head>
 <body>
+
+    <canvas id="fireCanvas"></canvas>
 
     <img src="me.png" alt="خالد KB" class="profile-pic">
     
@@ -152,6 +179,14 @@
         <a href="powerpoint.html" class="card"><span class="emoji">🎭</span>PowerPoint<small>العروض التقديمية الاحترافية</small></a>
         <a href="access.html" class="card access"><span class="emoji">🗄️</span>Microsoft Access<small>قواعد البيانات المتقدمة</small></a>
         
+        <a href="ai-pro.html" class="card ai-pro-card">
+            <div class="gold-shimmer"></div>
+            <span class="icon-ai">🤖</span>
+            <h3 class="gold-text">AI PRO KB</h3>
+            <p>الذكاء الاصطناعي الجديد للمطور خالد</p>
+            <div class="pro-badge">إصدار 2026 • VIP</div>
+        </a>
+
         <a href="challenges.html" class="card challenge-card">
             <span class="emoji">🎯</span>
             <span class="title">تحدي الـ 50 مستوى</span>
@@ -175,6 +210,15 @@
             <small>مطور ومحب للتقنية، هدفي تبسيط المعلوماتية للجميع.</small>
             <div class="surprise">مفاجآت جديدة قريباً... 🚀</div>
         </div>
+
+        <a href="toolbox.html" class="card toolbox-card" style="border: 2px solid #f59e0b !important; background: linear-gradient(145deg, rgba(17, 34, 64, 0.9), rgba(10, 25, 47, 0.9)) !important; text-decoration: none; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+            <span style="font-size: 45px; margin-bottom: 15px;">🧰</span>
+            <h3 style="color: #f59e0b; margin: 0; font-size: 1.2em; text-align: center;">حقيبة الأدوات الأساسية</h3>
+            <p style="color: #ccd6f6; font-size: 0.85em; margin-top: 10px; text-align: center;">كل ما تحتاجه بعد الفورمات في مكان واحد</p>
+            <div style="margin-top: 15px; background: rgba(245, 158, 11, 0.1); color: #f59e0b; padding: 4px 12px; border-radius: 15px; font-size: 0.75em; border: 1px solid #f59e0b;">
+                التعريفات • الـ Runtimes • برامج 🚀
+            </div>
+        </a>
     </div>
 
     <footer>تم التطوير بكل فخر بواسطة المطور خالد KB &copy; 2026</footer>
@@ -196,90 +240,114 @@
     </div>
 
     <script>
-        // 1. نظام التنبيهات الذكي
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.style.cssText = `
-                background: #112240; color: #64ffda; border-left: 5px solid #a855f7;
-                padding: 15px 25px; margin-top: 10px; border-radius: 10px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.5); font-size: 0.9em;
-                animation: slideIn 0.5s ease-out; min-width: 250px; transition: 0.5s;
-            `;
-            toast.innerText = message;
-            document.getElementById('toast-container').appendChild(toast);
-            setTimeout(() => { 
-                toast.style.opacity = '0'; 
-                setTimeout(() => toast.remove(), 500); 
-            }, 4000);
+        const canvas = document.getElementById('fireCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() { this.init(); }
+            init() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 50;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedY = Math.random() * 1.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 1.5;
+                const colors = ['#ff4500', '#ff8c00', '#ffd700', '#ff0000'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.opacity = Math.random() * 0.6 + 0.4;
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                this.opacity -= 0.002;
+                if (this.y < -10 || this.opacity <= 0) this.init();
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
 
-        setTimeout(() => showToast("مرحباً بك في أكاديمية خالد KB! 🎓"), 2000);
-        setTimeout(() => showToast("جرب 'تحدي الـ 50 مستوى' الآن! 🎯"), 7000);
+        function createParticles() { for (let i = 0; i < 120; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        createParticles(); animate();
 
-        // 2. نظام الماسح الضوئي DNA
+        // دالة الـ Toast المحدثة
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast-item';
+            toast.innerText = message;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 500); }, 4000);
+        }
+
+        // --- نظام الرسائل التلقائية (كل 10 ثواني) ---
+        const autoMessages = [
+            "مرحباً بك في أكاديمية خالد KB! 🎓",
+            "جرب 'تحدي الـ 50 مستوى' الآن! 🎯",
+            "استمتع بواجهة 'النار المتحركة' الجديدة 🔥",
+            "هل جربت الماسح الضوئي DNA؟ 🔍",
+            "جميع الأدوات الأساسية تجدها في الحقيبة 🧰"
+        ];
+        let msgIndex = 0;
+        setInterval(() => {
+            showToast(autoMessages[msgIndex]);
+            msgIndex = (msgIndex + 1) % autoMessages.length;
+        }, 10000);
+
         function startScan() {
             const overlay = document.getElementById('scan-overlay');
             const results = document.getElementById('scan-results');
             const text = document.getElementById('scan-text');
-            
             overlay.style.display = 'flex';
             results.style.display = 'none';
             text.style.display = 'block';
-
-            setTimeout(() => { text.innerText = "جاري تحليل أنماط التفاعل..."; }, 1000);
             setTimeout(() => { text.innerText = "جاري فحص ملفات الكفاءة..."; }, 2000);
-            
             setTimeout(() => {
                 text.style.display = 'none';
                 results.style.display = 'block';
                 document.getElementById('scan-line').style.display = 'none';
-                
-                // نتائج افتراضية قوية (يمكن ربطها بـ LocalStorage لاحقاً)
                 document.getElementById('res-1').innerText = "🔹 السرعة التقنية: محترف (A+)";
                 document.getElementById('res-2').innerText = "🔹 دقة البيانات: 98.5%";
                 document.getElementById('res-3').innerText = "🔹 التصنيف: خبير نظم مستقبلي 🏆";
             }, 3000);
         }
-
-        function closeScan() {
-            document.getElementById('scan-overlay').style.display = 'none';
-            document.getElementById('scan-line').style.display = 'block';
-        }
-
-        // أنيميشن الإشعارات
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        `;
-        document.head.appendChild(style);
+        function closeScan() { document.getElementById('scan-overlay').style.display = 'none'; document.getElementById('scan-line').style.display = 'block'; }
     </script>
-<script>
-    // 1. منع القائمة اليمنى (Right Click)
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        showToast("⚠️ عذراً.. حقوق الكود محفوظة لأكاديمية خالد KB");
-    });
+    <script>
+        // نظام الحماية المطور مع الـ Toast
+        document.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            showToast("⚠️ عذراً.. جميع حقوق الكود محفوظة لأكاديمية خالد KB");
+        });
 
-    // 2. منع اختصارات لوحة المفاتيح (F12, Ctrl+U, Ctrl+Shift+I)
-    document.onkeydown = function(e) {
-        // منع F12
-        if (event.keyCode == 123) { return false; }
-        
-        // منع Ctrl+Shift+I (المطورين)
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; }
-        
-        // منع Ctrl+Shift+J (المطورين)
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; }
-        
-        // منع Ctrl+U (عرض كود المصدر)
-        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; }
+        document.addEventListener('copy', e => {
+            e.preventDefault();
+            showToast("🚫 لا يسمح بنسخ المحتوى.. الحقوق محفوظة للمطور خالد");
+        });
 
-        // منع Ctrl+S (حفظ الصفحة)
-        if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) { return false; }
-    };
-
-    // 3. منع تصوير الشاشة أو السحب (اختياري)
-    document.styleSheets[0].insertRule('body { user-select: none; -webkit-user-select: none; }', 0);
-</script>
+        document.onkeydown = e => {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) {
+                showToast("🔒 وضع المطور مغلق لحماية الحقوق");
+                return false;
+            }
+        };
+        document.styleSheets[0].insertRule('body { user-select: none; -webkit-user-select: none; }', 0);
+    </script>
 </body>
 </html>
