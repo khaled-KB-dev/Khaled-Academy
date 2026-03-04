@@ -3,164 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية خالد للميكرومعلوماتية | النسخة النهائية</title>
+    <title>أكاديمية خالد للميكرومعلوماتية | النسخة النهائية 🚀</title>
     <style>
         :root {
-            --bg: #000000; 
-            --card-bg: #112240;
-            --cyan: #64ffda;
-            --text-main: #ccd6f6;
-            --text-dim: #8892b0;
-            --accent: #a855f7;
-            --fire-gold: #ffd700;
+            --bg: #1b0404; 
+            --card-bg: #0a0000; /* اللون الأزرق الداكن من الصور */
+            --cyan: #192838;
+            --accent: #e0d0d0; /* لون التحدي البنفسجي */
+            --gold: #ffd700; /* لون AI PRO الذهبي */
+            --text-main: #290202;
+            --text-dim: #45558f;
+        }
+
+        /* منع التحديد والنسخ */
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
 
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background-color: var(--bg); color: var(--text-main); 
-            margin: 0; padding: 20px; text-align: center;
-            overflow-x: hidden; position: relative;
+            margin: 0; padding: 20px; text-align: center; overflow-x: hidden;
         }
 
         #fireCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
-        /* شريط البحث */
-        .search-wrapper { margin: 20px auto 35px; max-width: 500px; position: relative; z-index: 5; }
+        /* شاشة التحميل */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 20000; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; transition: 0.8s;
+        }
+
+        .profile-pic { width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--cyan); margin-top: 15px; position: relative; z-index: 2; object-fit: cover; }
+        h1 { color: var(--cyan); margin: 15px 0; font-size: 2em; }
+
+        .search-wrapper { margin: 20px auto 35px; max-width: 500px; }
         #mainSearch {
-            width: 100%; padding: 15px 25px; border-radius: 30px; border: 1.5px solid var(--cyan);
-            background: rgba(17, 34, 64, 0.7); color: var(--cyan); font-size: 1.1em; outline: none;
-            backdrop-filter: blur(10px); transition: 0.3s; text-align: center;
+            width: 100%; padding: 15px; border-radius: 30px; border: 2px solid var(--cyan);
+            background: rgba(17, 34, 64, 0.8); color: #fff; text-align: center; outline: none;
         }
 
-        .profile-pic { width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--cyan); margin-top: 15px; object-fit: cover; position: relative; z-index: 2; }
-        h1 { color: var(--cyan); margin: 15px 0; font-size: 2.2em; position: relative; z-index: 2; }
-        
-        .grid-container { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 20px; max-width: 1300px; margin: 0 auto; padding-bottom: 80px; position: relative; z-index: 2; 
-        }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; padding-bottom: 50px; }
 
+        /* تصميم البطاقات المقتبس من الصور */
         .card { 
-            background: rgba(17, 34, 64, 0.85); padding: 25px; border-radius: 18px; border: 1px solid #233554; 
-            color: #81e6d9; text-decoration: none; transition: 0.4s; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            backdrop-filter: blur(8px); min-height: 190px;
+            background: var(--card-bg); padding: 30px; border-radius: 20px; 
+            border: 1.5px solid rgba(255,255,255,0.1); text-decoration: none; 
+            transition: 0.3s ease; display: flex; flex-direction: column; align-items: center; position: relative;
         }
-        .card:hover { transform: translateY(-10px); border-color: var(--cyan); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .card span.emoji { font-size: 3.2em; margin-bottom: 10px; }
-        .card-title { font-size: 1.4em; font-weight: bold; margin: 5px 0; display: block; color: var(--cyan); }
-        .card small { font-size: 0.9em; color: var(--text-dim); line-height: 1.4; }
+        .card:hover { transform: translateY(-8px); border-color: var(--cyan); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        
+        .card .emoji { font-size: 3.5em; margin-bottom: 15px; }
+        .card .title { font-size: 1.5em; font-weight: bold; margin-bottom: 10px; }
+        .card .desc { color: var(--text-dim); font-size: 0.95em; line-height: 1.6; margin-bottom: 20px; }
 
-        /* شارات التصنيف */
-        .badge { font-size: 0.75em; padding: 4px 12px; border-radius: 12px; margin-top: 10px; font-weight: bold; }
-        .badge-pro { background: var(--fire-gold); color: #000; }
-        .badge-level { background: var(--accent); color: #fff; }
-        .badge-toolbox { background: #f59e0b; color: #000; } /* شارة الحقيبة الذهبية */
+        /* أزرار البطاقات (كما في الصور) */
+        .badge-btn {
+            padding: 8px 25px; border-radius: 20px; font-weight: bold; font-size: 0.9em;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
 
-        /* AI PRO CARD الهيبة */
-        .ai-pro-card { background: linear-gradient(145deg, #1a1a1a, #000) !important; border: 2px solid var(--fire-gold) !important; position: relative; overflow: hidden; }
-        .gold-shimmer { position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent); transform: rotate(45deg); animation: shimmer 4s infinite; }
-        @keyframes shimmer { 0% { transform: translate(-30%, -30%) rotate(45deg); } 100% { transform: translate(30%, 30%) rotate(45deg); } }
+        /* تخصيص البطاقات حسب الصور */
+        .ai-card { border-color: var(--gold) !important; }
+        .ai-card .title { color: var(--gold); }
+        .ai-card .badge-btn { background: var(--gold); color: #000; }
+
+        .level-card { border-color: var(--accent) !important; }
+        .level-card .title { color: var(--accent); }
+        .level-card .badge-btn { background: var(--accent); color: #fff; }
+
+        .lab-card { border-color: #4fd1c5 !important; }
+        .lab-card .badge-btn { border: 1px solid #4fd1c5; color: #4fd1c5; background: transparent; }
+
+        .toolbox-card { border-color: #f6993f !important; }
+        .toolbox-card .title { color: #f6993f; }
+        .toolbox-card .badge-btn { border: 1px solid #f6993f; color: #f6993f; background: transparent; }
+
+        /* قسم "من هو خالد" */
+        .about-card { border: 2px dashed var(--cyan) !important; background: transparent !important; }
 
         /* الإشعارات */
-        .toast-item { background: rgba(0, 0, 0, 0.9); color: var(--cyan); border: 1px solid var(--fire-gold); padding: 12px 20px; margin-top: 10px; border-radius: 12px; backdrop-filter: blur(8px); animation: slideIn 0.5s ease-out; }
-        @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        
-        #dna-scanner { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10000; font-size: 28px; box-shadow: 0 0 15px var(--accent); transition: 0.3s; }
+        #toast-container { position: fixed; bottom: 80px; left: 20px; z-index: 10000; }
+        .toast-item { 
+            background: rgba(0,0,0,0.9); border: 1.5px solid var(--gold); color: #fff;
+            padding: 12px 20px; border-radius: 12px; margin-top: 10px;
+            animation: slideIn 0.5s forwards; min-width: 250px;
+        }
+        @keyframes slideIn { from { transform: translateX(-120%); } to { transform: translateX(0); } }
+
+        /* الدويرة البنفسجية (الماسح) */
+        #dna-scanner { 
+            position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; 
+            background: var(--accent); border-radius: 50%; display: flex; 
+            align-items: center; justify-content: center; cursor: pointer; z-index: 10000; 
+            font-size: 28px; box-shadow: 0 0 20px var(--accent); 
+        }
+
+        .cursor-particle { position: fixed; width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; pointer-events: none; z-index: 30000; }
         .card-hidden { display: none !important; }
+        #dna-scanner { 
+    position: fixed; 
+    bottom: 30px; 
+    right: 30px; 
+    width: 65px; 
+    height: 65px; 
+    background: #a855f7; /* اللون البنفسجي */
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+    z-index: 10000; 
+    font-size: 28px; 
+    box-shadow: 0 0 20px #a855f7; 
+    transition: 0.3s;
+    animation: pulse-scanner 2s infinite;
+}
+
+@keyframes pulse-scanner {
+    0% { transform: scale(1); box-shadow: 0 0 10px #a855f7; }
+    50% { transform: scale(1.1); box-shadow: 0 0 25px #a855f7; }
+    100% { transform: scale(1); box-shadow: 0 0 10px #a855f7; }
+}
+
+#dna-scanner:hover {
+    background: #64ffda; /* يتغير للسيان عند تمرير الماوس */
+    box-shadow: 0 0 30px #64ffda;
+}
     </style>
 </head>
-<body oncopy="return false" oncontextmenu="return false">
+<body>
 
+    <div id="preloader"><div style="font-size: 2.5em; color: var(--gold); font-weight: bold;">خالد KB</div></div>
     <canvas id="fireCanvas"></canvas>
     <img src="me.png" class="profile-pic">
     <h1>أكاديمية خالد للميكرومعلوماتية ✔️</h1>
 
-    <div class="search-wrapper">
-        <input type="text" id="mainSearch" placeholder="ابحث عن درس، أداة، أو تحدي... 🔍" onkeyup="filterCards()">
-    </div>
+    <div class="search-wrapper"><input type="text" id="mainSearch" placeholder="ماذا تريد أن تتعلم اليوم؟ 🔍" onkeyup="filterCards()"></div>
 
     <div class="grid-container">
-        <a href="ai-pro.html" class="card search-item ai-pro-card">
-            <div class="gold-shimmer"></div>
-            <span class="emoji" style="z-index:3">🤖</span>
-            <span class="card-title" style="color:var(--fire-gold); z-index:3">AI PRO KB</span>
-            <small style="z-index:3">محرك ذكاء اصطناعي VIP مُحسّن للغة العربية<br>تحليل بيانات وإجابات معقدة فورية</small>
-            <span class="badge badge-pro" style="z-index:3">إصدار VIP 2026</span>
-        </a>
-
-        <a href="challenges.html" class="card search-item" style="border-color: var(--accent);">
-            <span class="emoji">🎯</span>
-            <span class="card-title">تحدي الـ 50 مستوى</span>
-            <small>هيكل تعليمي متدرج من الصفر للاحتراف<br>افتح المستويات واحصل على شهادتك</small>
-            <span class="badge badge-level pulse">ابدأ المغامرة</span>
-        </a>
-
-        <a href="tech-lab.html" class="card search-item" style="border-color: var(--cyan);">
-            <span class="emoji">🔬</span>
-            <span class="card-title">مختبر العتاد والبرمجيات</span>
-            <small>70 سؤالاً في الـ Hardware & Software<br>اختبر مهاراتك لتصبح "خبير نظم"</small>
-        </a>
-
-        <a href="word.html" class="card search-item">
-            <span class="emoji">📝</span>
-            <span class="card-title">Microsoft Word</span>
-            <small>إتقان تنسيق المستندات<br>والتقارير الاحترافية</small>
-        </a>
-
-        <a href="excel.html" class="card search-item">
-            <span class="emoji">📊</span>
-            <span class="card-title">Microsoft Excel</span>
-            <small>تحليل البيانات والدوول<br>والجداول الذكية</small>
-        </a>
-
-        <a href="access.html" class="card search-item" style="border-color: #ef4444;">
-            <span class="emoji">🗄️</span>
-            <span class="card-title">Microsoft Access</span>
-            <small>إدارة قواعد البيانات<br>بناء أنظمة برمجية متكاملة</small>
-        </a>
-
-        <a href="powerpoint.html" class="card search-item">
-            <span class="emoji">🎭</span>
-            <span class="card-title">PowerPoint</span>
-            <small>تصميم عروض تقديمية احترافية<br>تخطف الأنظار</small>
-        </a>
-
-        <a href="alternatives.html" class="card search-item" style="border-color: #f97316;">
-            <span class="emoji">🎁</span>
-            <span class="card-title">بدائل الأوفيس</span>
-            <small>برامج مجانية قوية ومفتوحة المصدر لحزم الأوفيس<br>وفر تكلفة الاشتراك ببدائل LibreOffice و Google Docs</small>
-        </a>
-
-        <a href="shortcuts.html" class="card search-item">
-            <span class="emoji">⌨️</span>
-            <span class="card-title">اختصارات الكيبورد</span>
-            <small>ضاعف سرعة عملك الإنتاجية 10 مرات<br>أسرار التحكم السريع في النظام والبرامج</small>
-        </a>
-
-        <a href="ai.html" class="card search-item">
+        <a href="ai-pro.html" class="card search-item ai-card">
             <span class="emoji">🤖</span>
-            <span class="card-title">مساعد خالد الذكي</span>
-            <small>دردشة فورية ذكية<br>للمساعدة في حل المشكلات التقنية</small>
+            <span class="title">AI PRO KB</span>
+            <span class="desc">الذكاء الاصطناعي الجديد للمطور خالد</span>
+            <span class="badge-btn">إصدار VIP • 2026</span>
         </a>
 
-        <a href="toolbox.html" class="card search-item" style="border: 2px solid #f59e0b !important;">
+        <a href="challenges.html" class="card search-item level-card">
+            <span class="emoji">🎯</span>
+            <span class="title">تحدي الـ 50 مستوى</span>
+            <span class="desc">من الصفر إلى الاحتراف المطلق</span>
+            <span class="badge-btn">ابدأ المغامرة الآن 🔥</span>
+        </a>
+
+        <a href="tech-lab.html" class="card search-item lab-card">
+            <span class="emoji">🔬</span>
+            <span class="title" style="color:#4fd1c5">مختبر العتاد والبرمجيات</span>
+            <span class="desc">70 سؤالاً في الـ Hardware & Software</span>
+            <span class="badge-btn">🛠️ مستوى: خبير نظم</span>
+        </a>
+
+        <a href="toolbox.html" class="card search-item toolbox-card">
             <span class="emoji">🧰</span>
-            <span class="card-title" style="color: #f59e0b;">حقيبة الأدوات الأساسية</span>
-            <small>برامج وأدوات أساسية لا غنى عنها لأي جهاز كمبيوتر<br>بعد الفورمات في مكان واحد</small>
-            <span class="badge badge-toolbox">التعريفات • الـ Runtimes • برامج 🚀</span>
+            <span class="title">حقيبة الأدوات الأساسية</span>
+            <span class="desc">كل ما تحتاجه بعد الفورمات في مكان واحد</span>
+            <span class="badge-btn">🚀 التعريفات • الـ Runtimes • برامج</span>
         </a>
+
+        <div class="card about-card search-item">
+            <span class="emoji">👤</span>
+            <span class="title" style="color:var(--cyan)">من هو خالد؟</span>
+            <span class="desc">مطور ومحب للتقنية، هدفي تبسيط المعلوماتية للجميع.<br><br><b style="color:#fff">مفاجآت جديدة قريباً... 🚀</b></span>
+        </div>
+
+        <a href="word.html" class="card search-item"><span class="emoji">📝</span><span class="title">Microsoft Word</span><span class="desc">تنسيق المستندات والتقارير</span></a>
+        <a href="excel.html" class="card search-item"><span class="emoji">📊</span><span class="title">Microsoft Excel</span><span class="desc">تحليل البيانات والجداول</span></a>
+        <a href="access.html" class="card search-item"><span class="emoji">🗄️</span><span class="title">Microsoft Access</span><span class="desc">إدارة قواعد البيانات</span></a>
+        <a href="powerpoint.html" class="card search-item"><span class="emoji">🎭</span><span class="title">PowerPoint</span><span class="desc">عروض تقديمية احترافية</span></a>
+        <a href="alternatives.html" class="card search-item" style="border-color:#f6993f"><span class="emoji">🎁</span><span class="title" style="color:#f6993f">بدائل الأوفيس</span><span class="desc">برامج مجانية قوية جداً</span></a>
+        <a href="shortcuts.html" class="card search-item"><span class="emoji">⌨️</span><span class="title">اختصارات الكيبورد</span><span class="desc">لتسريع عملك 10 أضعاف</span></a>
     </div>
 
-    <div style="margin-top: -60px; margin-bottom: 50px; color: var(--text-dim); position: relative; z-index: 2; border: 1px solid var(--card-bg); padding: 10px; display: inline-block; border-radius: 10px; background: var(--bg);">
-        تم التطوير بكل فخر بواسطة المطور خالد KB &copy; 2026<br>
-        <span style="color: var(--fire-gold);">مرحبا بكم 🎯🔥</span>
+    <div style="margin: 50px 0; color: var(--text-dim);">
+        تم التطوير بكل فخر بواسطة المطور خالد KB &copy; 2026<br><br>
+        <div style="border: 1px solid var(--gold); padding: 10px; border-radius: 10px; display: inline-block; color: #fff;">
+     مرحبا بكم🎯
+        </div>
     </div>
 
-    <div id="toast-container" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;"></div>
-    <div id="dna-scanner" onclick="showToast('جاري تحليل ملفك التقني يا بطل...')">🔍</div>
+    <div id="toast-container"></div>
+    <div id="dna-scanner" onclick="handleScannerClick()">🔍</div>
 
     <script>
+        // 1. ميزة عدم النسخ وعدم القائمة اليمنى
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('copy', e => {
+            e.preventDefault();
+            showToast("🚫 المحتوى محمي.. النسخ غير مسموح!");
+        });
+
+        // إغلاق التحميل
+        window.onload = () => { setTimeout(() => { document.getElementById('preloader').style.opacity = '0'; setTimeout(() => document.getElementById('preloader').remove(), 800); }, 1500); };
+
+        // تتبع الماوس
+        document.addEventListener('mousemove', (e) => {
+            const p = document.createElement('div'); p.className = 'cursor-particle';
+            p.style.left = e.clientX + 'px'; p.style.top = e.clientY + 'px';
+            document.body.appendChild(p);
+            setTimeout(() => { p.style.transform = 'scale(0)'; p.style.opacity = '0'; setTimeout(() => p.remove(), 500); }, 50);
+        });
+
+        // رسائل متغيرة كل 10 ثواني (كما طلبت)
+        const messages = [
+            "🎓 مرحباً بك في أكاديمية خالد KB للتقنية",
+            "🚀 انطلق في تحدي الـ 50 مستوى الآن!",
+            "🤖 جرب ذكاء AI PRO KB الحصري 2026",
+            "🛠️ هل حملت حقيبة الأدوات الأساسية؟"
+        ];
+        let msgIndex = 0;
+        function showNextToast() {
+            const container = document.getElementById('toast-container');
+            container.innerHTML = ''; 
+            const t = document.createElement('div'); t.className = 'toast-item';
+            t.innerText = messages[msgIndex];
+            container.appendChild(t);
+            msgIndex = (msgIndex + 1) % messages.length;
+            setTimeout(() => { t.style.opacity = '0'; }, 9000);
+        }
+        setInterval(showNextToast, 10000); showNextToast();
+
+        function showToast(m) {
+            const container = document.getElementById('toast-container');
+            const t = document.createElement('div'); t.className = 'toast-item';
+            t.style.borderColor = 'red'; t.innerText = m;
+            container.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        }
+
         function filterCards() {
             let input = document.getElementById('mainSearch').value.toLowerCase();
             document.querySelectorAll('.search-item').forEach(item => {
@@ -168,20 +251,8 @@
             });
         }
 
-        function showToast(message) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast-item';
-            toast.innerText = message;
-            container.appendChild(toast);
-            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 500); }, 4000);
-        }
-
-        document.addEventListener('contextmenu', e => { e.preventDefault(); showToast("⚠️ حقوق النشر محفوظة لخالد KB"); });
-        document.addEventListener('copy', e => { e.preventDefault(); showToast("🚫 النسخ غير مسموح"); });
-
-        const canvas = document.getElementById('fireCanvas');
-        const ctx = canvas.getContext('2d');
+        // نظام النار الخلفي
+        const canvas = document.getElementById('fireCanvas'); const ctx = canvas.getContext('2d');
         let particles = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
@@ -189,18 +260,75 @@
             constructor() { this.init(); }
             init() {
                 this.x = Math.random()*canvas.width; this.y = canvas.height+50;
-                this.size = Math.random()*2; this.speedY = Math.random()*1.5+0.5;
+                this.size = Math.random()*2; this.speedY = Math.random()*1+0.5;
                 this.color = ['#ff4500', '#ff8c00', '#ffd700'][Math.floor(Math.random()*3)];
-                this.opacity = Math.random()*0.6+0.4;
+                this.opacity = Math.random()*0.5;
             }
-            update() { this.y-=this.speedY; this.opacity-=0.002; if(this.y<-10 || this.opacity<=0) this.init(); }
+            update() { this.y-=this.speedY; this.opacity-=0.001; if(this.y<-10 || this.opacity<=0) this.init(); }
             draw() { ctx.globalAlpha=this.opacity; ctx.fillStyle=this.color; ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fill(); }
         }
-        for(let i=0; i<100; i++) particles.push(new Particle());
+        for(let i=0; i<60; i++) particles.push(new Particle());
         function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update(); p.draw();}); requestAnimationFrame(animate); }
         animate();
+        function handleScannerClick() {
+    // إشعار احترافي عند الضغط
+    showToast("جاري فحص بصمتك الرقمية... تم التحقق! ✅");
+    
+    // إضافة تأثير اهتزاز بسيط عند النقر
+    const scanner = document.getElementById('dna-scanner');
+    scanner.style.transform = "scale(0.9)";
+    setTimeout(() => { scanner.style.transform = "scale(1)"; }, 100);
+}
 
-        setInterval(() => showToast("أهلاً بك في فضاء خالد KB التقني! 🎓"), 15000);
+// دالة showToast لضمان عملها مع السكانر
+function showToast(message) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    
+    const toast = document.createElement('div');
+    toast.className = 'toast-item';
+    toast.style.borderColor = '#a855f7';
+    toast.innerText = message;
+    
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 500);
+    }, 3000);
+}
     </script>
+    <script>
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        showToast("⚠️ عذراً الكود محمي بحقوق المطور خالد KB");
+    });
+
+    document.onkeydown = function(e) {
+        // منع F12، Ctrl+Shift+I، Ctrl+U، Ctrl+Shift+J
+        if (e.keyCode == 123 || 
+            (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
+            (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+            e.preventDefault();
+            showToast("🚫 محاولة اختراق الكود؟ خالد KB يراقبك! 😎");
+            return false;
+        }
+    };
+
+    // دالة مساعدة لضمان ظهور الإشعار (إذا لم تكن موجودة)
+    function showToast(message) {
+        if (typeof window.showNextToast === "function") {
+            // استخدام نظام الإشعارات الموجود في موقعك أصلاً
+            const container = document.getElementById('toast-container');
+            const t = document.createElement('div');
+            t.className = 'toast-item';
+            t.style.borderColor = '#ffd700'; // لون ذهبي للتحذير
+            t.innerText = message;
+            container.appendChild(t);
+            setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 500); }, 3000);
+        } else {
+            alert(message); // حماية احتياطية
+        }
+    }
+</script>
 </body>
 </html>
