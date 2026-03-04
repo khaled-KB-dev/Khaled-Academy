@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية خالد للميكرومعلوماتية | الرئيسية</title>
+    <title>أكاديمية خالد للميكرومعلوماتية | النسخة النهائية</title>
     <style>
         :root {
-            /* تعديل الخلفية لتصبح سوداء ملكية */
             --bg: #000000; 
             --card-bg: #112240;
             --cyan: #64ffda;
@@ -18,275 +17,157 @@
 
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text-main); 
-            margin: 0; padding: 20px; 
-            text-align: center;
-            overflow-x: hidden;
-            position: relative; /* مهم لعمل الـ Canvas */
+            background-color: var(--bg); color: var(--text-main); 
+            margin: 0; padding: 20px; text-align: center;
+            overflow-x: hidden; position: relative;
         }
 
-        /* --- تأثير شظايا النار الخلفية --- */
-        #fireCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1; /* خلف كل العناصر */
-            pointer-events: none;
+        #fireCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+        /* شريط البحث */
+        .search-wrapper { margin: 20px auto 35px; max-width: 500px; position: relative; z-index: 5; }
+        #mainSearch {
+            width: 100%; padding: 15px 25px; border-radius: 30px; border: 1.5px solid var(--cyan);
+            background: rgba(17, 34, 64, 0.7); color: var(--cyan); font-size: 1.1em; outline: none;
+            backdrop-filter: blur(10px); transition: 0.3s; text-align: center;
         }
 
-        /* صورة الملف الشخصي */
-        .profile-pic { 
-            width: 140px; height: 140px; 
-            border-radius: 50%; 
-            border: 3px solid var(--cyan); 
-            margin-top: 20px;
-            object-fit: cover;
-            box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
-            transition: 0.5s;
-            position: relative; z-index: 2;
-        }
-        .profile-pic:hover { transform: rotate(5deg) scale(1.05); }
-
-        h1 { color: var(--cyan); margin: 15px 0; font-size: 2.2em; text-shadow: 0 0 10px rgba(100, 255, 218, 0.3); position: relative; z-index: 2; }
-
-        .insta-link { 
-            display: inline-block; 
-            color: var(--cyan); 
-            text-decoration: none; 
-            border: 1px solid var(--cyan); 
-            padding: 8px 25px; 
-            border-radius: 25px; 
-            margin-bottom: 40px;
-            transition: 0.3s;
-            font-weight: 500;
-            position: relative; z-index: 2;
-        }
-        .insta-link:hover { background: rgba(100, 255, 218, 0.1); transform: translateY(-2px); }
-
-        /* حاوية البطاقات */
+        .profile-pic { width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--cyan); margin-top: 15px; object-fit: cover; position: relative; z-index: 2; }
+        h1 { color: var(--cyan); margin: 15px 0; font-size: 2.2em; position: relative; z-index: 2; }
+        
         .grid-container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
-            gap: 20px; 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            padding-bottom: 100px;
-            position: relative; z-index: 2;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; max-width: 1300px; margin: 0 auto; padding-bottom: 80px; position: relative; z-index: 2; 
         }
 
         .card { 
-            background: rgba(17, 34, 64, 0.8); /* جعلها شفافة قليلاً لرؤية النار */
-            padding: 30px; 
-            border-radius: 15px; 
-            border: 1px solid #233554; 
-            color: #81e6d9; 
-            text-decoration: none; 
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            backdrop-filter: blur(5px);
+            background: rgba(17, 34, 64, 0.85); padding: 25px; border-radius: 18px; border: 1px solid #233554; 
+            color: #81e6d9; text-decoration: none; transition: 0.4s; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            backdrop-filter: blur(8px); min-height: 190px;
         }
-        .card:hover { 
-            transform: translateY(-10px); 
-            border-color: var(--cyan); 
-            background: #1d2d50;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-        }
+        .card:hover { transform: translateY(-10px); border-color: var(--cyan); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card span.emoji { font-size: 3.2em; margin-bottom: 10px; }
+        .card-title { font-size: 1.4em; font-weight: bold; margin: 5px 0; display: block; color: var(--cyan); }
+        .card small { font-size: 0.9em; color: var(--text-dim); line-height: 1.4; }
 
-        /* بقية تنسيقات البطاقات كما هي تماماً */
-        .card.ai { border: 2px solid var(--cyan); color: var(--cyan); }
-        .card.access { color: #ff4d4d; border-color: #ff4d4d; }
-        .card.alternatives { color: #ffa500; border-color: #ffa500; }
-        .card.challenge-card { border: 2px solid var(--accent); background: linear-gradient(145deg, rgba(17, 34, 64, 0.9), rgba(26, 11, 46, 0.9)); }
-        .card.challenge-card .title { color: var(--accent); font-size: 1.2em; font-weight: bold; }
-        .level-badge { background: var(--accent); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin-top: 10px; animation: pulse 2s infinite; }
-        .card.tech-card { border: 2px solid var(--cyan); }
-        .tech-tag { color: var(--cyan); border: 1px solid var(--cyan); padding: 3px 10px; border-radius: 5px; font-size: 0.8em; margin-top: 10px; }
-        .card small { font-weight: normal; font-size: 0.85em; margin-top: 10px; color: var(--text-dim); }
-        .card .emoji { font-size: 2.5em; margin-bottom: 10px; }
-        .card.about { background: rgba(26, 48, 85, 0.8); border: 1px dashed var(--cyan); }
-        .surprise { color: var(--cyan); font-weight: bold; margin-top: 10px; animation: blink 1.5s infinite; }
+        /* شارات التصنيف */
+        .badge { font-size: 0.75em; padding: 4px 12px; border-radius: 12px; margin-top: 10px; font-weight: bold; }
+        .badge-pro { background: var(--fire-gold); color: #000; }
+        .badge-level { background: var(--accent); color: #fff; }
+        .badge-toolbox { background: #f59e0b; color: #000; } /* شارة الحقيبة الذهبية */
 
-        /* AI PRO CARD Style */
-        .ai-pro-card {
-            background: linear-gradient(145deg, #1a1a1a, #000) !important;
-            border: 2px solid #ffd700 !important;
-            position: relative;
-            overflow: hidden;
-            aspect-ratio: 1 / 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: 0.4s;
-        }
-        .gold-text { color: #ffd700 !important; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); font-weight: bold; }
+        /* AI PRO CARD الهيبة */
+        .ai-pro-card { background: linear-gradient(145deg, #1a1a1a, #000) !important; border: 2px solid var(--fire-gold) !important; position: relative; overflow: hidden; }
         .gold-shimmer { position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent); transform: rotate(45deg); animation: shimmer 4s infinite; }
         @keyframes shimmer { 0% { transform: translate(-30%, -30%) rotate(45deg); } 100% { transform: translate(30%, 30%) rotate(45deg); } }
-        .pro-badge { margin-top: 15px; background: #ffd700; color: #000; padding: 4px 12px; border-radius: 20px; font-size: 0.7em; font-weight: bold; }
 
-        /* الأنيميشن والماسح الضوئي */
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-        @keyframes scanAnim { 0% { top: 0; } 100% { top: 100%; } }
-
-        #dna-scanner { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 25px rgba(168, 85, 247, 0.5); z-index: 10000; transition: 0.4s; font-size: 28px; }
-        #dna-scanner:hover { transform: scale(1.1) rotate(15deg); background: var(--cyan); }
-        #scan-overlay { display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 25, 47, 0.98); z-index: 10001; align-items: center; justify-content: center; flex-direction: column; color: var(--cyan); font-family: 'Courier New', monospace; }
-        #scan-line { width: 100%; height: 3px; background: var(--cyan); position: absolute; top: 0; box-shadow: 0 0 20px var(--cyan); animation: scanAnim 2s linear infinite; }
-        #scan-results { display:none; text-align: right; background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--accent); max-width: 450px; width: 90%; }
-
-        footer { margin: 50px 0; color: var(--text-dim); font-size: 0.9em; position: relative; z-index: 2; }
-
-        /* تخصيص الـ Toast ليتناسب مع الخلفية السوداء */
-        .toast-item {
-            background: rgba(0, 0, 0, 0.8) !important;
-            color: var(--cyan) !important;
-            border: 1px solid var(--fire-gold) !important;
-            padding: 15px 25px;
-            margin-top: 10px;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
-            font-size: 0.9em;
-            backdrop-filter: blur(8px);
-            animation: slideIn 0.5s ease-out;
-            min-width: 260px;
-            transition: 0.5s;
-        }
+        /* الإشعارات */
+        .toast-item { background: rgba(0, 0, 0, 0.9); color: var(--cyan); border: 1px solid var(--fire-gold); padding: 12px 20px; margin-top: 10px; border-radius: 12px; backdrop-filter: blur(8px); animation: slideIn 0.5s ease-out; }
         @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        #dna-scanner { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10000; font-size: 28px; box-shadow: 0 0 15px var(--accent); transition: 0.3s; }
+        .card-hidden { display: none !important; }
     </style>
 </head>
-<body>
+<body oncopy="return false" oncontextmenu="return false">
 
     <canvas id="fireCanvas"></canvas>
-
-    <img src="me.png" alt="خالد KB" class="profile-pic">
-    
+    <img src="me.png" class="profile-pic">
     <h1>أكاديمية خالد للميكرومعلوماتية ✔️</h1>
-    
-    <a href="https://www.instagram.com/volkov.shadow" target="_blank" class="insta-link">
-        volkov.shadow@ 📷
-    </a>
+
+    <div class="search-wrapper">
+        <input type="text" id="mainSearch" placeholder="ابحث عن درس، أداة، أو تحدي... 🔍" onkeyup="filterCards()">
+    </div>
 
     <div class="grid-container">
-        <a href="word.html" class="card"><span class="emoji">📝</span>Microsoft Word<small>تنسيق وتحرير المستندات</small></a>
-        <a href="excel.html" class="card"><span class="emoji">📊</span>Microsoft Excel<small>الجداول الحسابية والبيانات</small></a>
-        <a href="powerpoint.html" class="card"><span class="emoji">🎭</span>PowerPoint<small>العروض التقديمية الاحترافية</small></a>
-        <a href="access.html" class="card access"><span class="emoji">🗄️</span>Microsoft Access<small>قواعد البيانات المتقدمة</small></a>
-        
-        <a href="ai-pro.html" class="card ai-pro-card">
+        <a href="ai-pro.html" class="card search-item ai-pro-card">
             <div class="gold-shimmer"></div>
-            <span class="icon-ai">🤖</span>
-            <h3 class="gold-text">AI PRO KB</h3>
-            <p>الذكاء الاصطناعي الجديد للمطور خالد</p>
-            <div class="pro-badge">إصدار 2026 • VIP</div>
+            <span class="emoji" style="z-index:3">🤖</span>
+            <span class="card-title" style="color:var(--fire-gold); z-index:3">AI PRO KB</span>
+            <small style="z-index:3">محرك ذكاء اصطناعي VIP مُحسّن للغة العربية<br>تحليل بيانات وإجابات معقدة فورية</small>
+            <span class="badge badge-pro" style="z-index:3">إصدار VIP 2026</span>
         </a>
 
-        <a href="challenges.html" class="card challenge-card">
+        <a href="challenges.html" class="card search-item" style="border-color: var(--accent);">
             <span class="emoji">🎯</span>
-            <span class="title">تحدي الـ 50 مستوى</span>
-            <small>من الصفر إلى الاحتراف المطلق</small>
-            <div class="level-badge">ابدأ المغامرة الآن 🔥</div>
+            <span class="card-title">تحدي الـ 50 مستوى</span>
+            <small>هيكل تعليمي متدرج من الصفر للاحتراف<br>افتح المستويات واحصل على شهادتك</small>
+            <span class="badge badge-level pulse">ابدأ المغامرة</span>
         </a>
 
-        <a href="tech-lab.html" class="card tech-card">
+        <a href="tech-lab.html" class="card search-item" style="border-color: var(--cyan);">
             <span class="emoji">🔬</span>
-            <span class="title">مختبر العتاد والبرمجيات</span>
-            <small>70 سؤالاً في الـ Hardware & Software</small>
-            <div class="tech-tag">مستوى: خبير نظم 🛠️</div>
+            <span class="card-title">مختبر العتاد والبرمجيات</span>
+            <small>70 سؤالاً في الـ Hardware & Software<br>اختبر مهاراتك لتصبح "خبير نظم"</small>
         </a>
 
-        <a href="alternatives.html" class="card alternatives"><span class="emoji">🎁</span>بدائل الأوفيس<small>برامج مجانية قوية جداً</small></a>
-        <a href="shortcuts.html" class="card"><span class="emoji">⌨️</span>اختصارات الكيبورد<small>لتسريع عملك 10 أضعاف</small></a>
-        <a href="ai.html" class="card ai"><span class="emoji">🤖</span>مساعد خالد الذكي<small>دردشة فورية بالذكاء الاصطناعي</small></a>
+        <a href="word.html" class="card search-item">
+            <span class="emoji">📝</span>
+            <span class="card-title">Microsoft Word</span>
+            <small>إتقان تنسيق المستندات<br>والتقارير الاحترافية</small>
+        </a>
 
-        <div class="card about">
-            <span>👤 من هو خالد؟</span>
-            <small>مطور ومحب للتقنية، هدفي تبسيط المعلوماتية للجميع.</small>
-            <div class="surprise">مفاجآت جديدة قريباً... 🚀</div>
-        </div>
+        <a href="excel.html" class="card search-item">
+            <span class="emoji">📊</span>
+            <span class="card-title">Microsoft Excel</span>
+            <small>تحليل البيانات والدوول<br>والجداول الذكية</small>
+        </a>
 
-        <a href="toolbox.html" class="card toolbox-card" style="border: 2px solid #f59e0b !important; background: linear-gradient(145deg, rgba(17, 34, 64, 0.9), rgba(10, 25, 47, 0.9)) !important; text-decoration: none; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
-            <span style="font-size: 45px; margin-bottom: 15px;">🧰</span>
-            <h3 style="color: #f59e0b; margin: 0; font-size: 1.2em; text-align: center;">حقيبة الأدوات الأساسية</h3>
-            <p style="color: #ccd6f6; font-size: 0.85em; margin-top: 10px; text-align: center;">كل ما تحتاجه بعد الفورمات في مكان واحد</p>
-            <div style="margin-top: 15px; background: rgba(245, 158, 11, 0.1); color: #f59e0b; padding: 4px 12px; border-radius: 15px; font-size: 0.75em; border: 1px solid #f59e0b;">
-                التعريفات • الـ Runtimes • برامج 🚀
-            </div>
+        <a href="access.html" class="card search-item" style="border-color: #ef4444;">
+            <span class="emoji">🗄️</span>
+            <span class="card-title">Microsoft Access</span>
+            <small>إدارة قواعد البيانات<br>بناء أنظمة برمجية متكاملة</small>
+        </a>
+
+        <a href="powerpoint.html" class="card search-item">
+            <span class="emoji">🎭</span>
+            <span class="card-title">PowerPoint</span>
+            <small>تصميم عروض تقديمية احترافية<br>تخطف الأنظار</small>
+        </a>
+
+        <a href="alternatives.html" class="card search-item" style="border-color: #f97316;">
+            <span class="emoji">🎁</span>
+            <span class="card-title">بدائل الأوفيس</span>
+            <small>برامج مجانية قوية ومفتوحة المصدر لحزم الأوفيس<br>وفر تكلفة الاشتراك ببدائل LibreOffice و Google Docs</small>
+        </a>
+
+        <a href="shortcuts.html" class="card search-item">
+            <span class="emoji">⌨️</span>
+            <span class="card-title">اختصارات الكيبورد</span>
+            <small>ضاعف سرعة عملك الإنتاجية 10 مرات<br>أسرار التحكم السريع في النظام والبرامج</small>
+        </a>
+
+        <a href="ai.html" class="card search-item">
+            <span class="emoji">🤖</span>
+            <span class="card-title">مساعد خالد الذكي</span>
+            <small>دردشة فورية ذكية<br>للمساعدة في حل المشكلات التقنية</small>
+        </a>
+
+        <a href="toolbox.html" class="card search-item" style="border: 2px solid #f59e0b !important;">
+            <span class="emoji">🧰</span>
+            <span class="card-title" style="color: #f59e0b;">حقيبة الأدوات الأساسية</span>
+            <small>برامج وأدوات أساسية لا غنى عنها لأي جهاز كمبيوتر<br>بعد الفورمات في مكان واحد</small>
+            <span class="badge badge-toolbox">التعريفات • الـ Runtimes • برامج 🚀</span>
         </a>
     </div>
 
-    <footer>تم التطوير بكل فخر بواسطة المطور خالد KB &copy; 2026</footer>
+    <div style="margin-top: -60px; margin-bottom: 50px; color: var(--text-dim); position: relative; z-index: 2; border: 1px solid var(--card-bg); padding: 10px; display: inline-block; border-radius: 10px; background: var(--bg);">
+        تم التطوير بكل فخر بواسطة المطور خالد KB &copy; 2026<br>
+        <span style="color: var(--fire-gold);">مرحبا بكم 🎯🔥</span>
+    </div>
 
     <div id="toast-container" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;"></div>
-
-    <div id="dna-scanner" onclick="startScan()">🔍</div>
-
-    <div id="scan-overlay">
-        <div id="scan-line"></div>
-        <h2 id="scan-text">جاري فحص البصمة الرقمية...</h2>
-        <div id="scan-results">
-            <h3 style="color: var(--cyan); border-bottom: 1px solid var(--accent); padding-bottom: 10px;">📊 تقرير الكفاءة التقنية:</h3>
-            <p id="res-1">🔹 السرعة: جاري القياس...</p>
-            <p id="res-2">🔹 الخبرة: جاري التحليل...</p>
-            <p id="res-3">🔹 التصنيف: جاري المعالجة...</p>
-            <button onclick="closeScan()" style="background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 15px; font-weight: bold;">تحديث البيانات 🔄</button>
-        </div>
-    </div>
+    <div id="dna-scanner" onclick="showToast('جاري تحليل ملفك التقني يا بطل...')">🔍</div>
 
     <script>
-        const canvas = document.getElementById('fireCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        class Particle {
-            constructor() { this.init(); }
-            init() {
-                this.x = Math.random() * canvas.width;
-                this.y = canvas.height + Math.random() * 50;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedY = Math.random() * 1.5 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 1.5;
-                const colors = ['#ff4500', '#ff8c00', '#ffd700', '#ff0000'];
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-                this.opacity = Math.random() * 0.6 + 0.4;
-            }
-            update() {
-                this.y -= this.speedY;
-                this.x += this.speedX;
-                this.opacity -= 0.002;
-                if (this.y < -10 || this.opacity <= 0) this.init();
-            }
-            draw() {
-                ctx.globalAlpha = this.opacity;
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
+        function filterCards() {
+            let input = document.getElementById('mainSearch').value.toLowerCase();
+            document.querySelectorAll('.search-item').forEach(item => {
+                item.classList.toggle('card-hidden', !item.innerText.toLowerCase().includes(input));
+            });
         }
 
-        function createParticles() { for (let i = 0; i < 120; i++) particles.push(new Particle()); }
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-        createParticles(); animate();
-
-        // دالة الـ Toast المحدثة
         function showToast(message) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -296,58 +177,30 @@
             setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 500); }, 4000);
         }
 
-        // --- نظام الرسائل التلقائية (كل 10 ثواني) ---
-        const autoMessages = [
-            "مرحباً بك في أكاديمية خالد KB! 🎓",
-            "جرب 'تحدي الـ 50 مستوى' الآن! 🎯",
-            "استمتع بواجهة 'النار المتحركة' الجديدة 🔥",
-            "هل جربت الماسح الضوئي DNA؟ 🔍",
-            "جميع الأدوات الأساسية تجدها في الحقيبة 🧰"
-        ];
-        let msgIndex = 0;
-        setInterval(() => {
-            showToast(autoMessages[msgIndex]);
-            msgIndex = (msgIndex + 1) % autoMessages.length;
-        }, 10000);
+        document.addEventListener('contextmenu', e => { e.preventDefault(); showToast("⚠️ حقوق النشر محفوظة لخالد KB"); });
+        document.addEventListener('copy', e => { e.preventDefault(); showToast("🚫 النسخ غير مسموح"); });
 
-        function startScan() {
-            const overlay = document.getElementById('scan-overlay');
-            const results = document.getElementById('scan-results');
-            const text = document.getElementById('scan-text');
-            overlay.style.display = 'flex';
-            results.style.display = 'none';
-            text.style.display = 'block';
-            setTimeout(() => { text.innerText = "جاري فحص ملفات الكفاءة..."; }, 2000);
-            setTimeout(() => {
-                text.style.display = 'none';
-                results.style.display = 'block';
-                document.getElementById('scan-line').style.display = 'none';
-                document.getElementById('res-1').innerText = "🔹 السرعة التقنية: محترف (A+)";
-                document.getElementById('res-2').innerText = "🔹 دقة البيانات: 98.5%";
-                document.getElementById('res-3').innerText = "🔹 التصنيف: خبير نظم مستقبلي 🏆";
-            }, 3000);
-        }
-        function closeScan() { document.getElementById('scan-overlay').style.display = 'none'; document.getElementById('scan-line').style.display = 'block'; }
-    </script>
-    <script>
-        // نظام الحماية المطور مع الـ Toast
-        document.addEventListener('contextmenu', e => {
-            e.preventDefault();
-            showToast("⚠️ عذراً.. جميع حقوق الكود محفوظة لأكاديمية خالد KB");
-        });
-
-        document.addEventListener('copy', e => {
-            e.preventDefault();
-            showToast("🚫 لا يسمح بنسخ المحتوى.. الحقوق محفوظة للمطور خالد");
-        });
-
-        document.onkeydown = e => {
-            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) {
-                showToast("🔒 وضع المطور مغلق لحماية الحقوق");
-                return false;
+        const canvas = document.getElementById('fireCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+        class Particle {
+            constructor() { this.init(); }
+            init() {
+                this.x = Math.random()*canvas.width; this.y = canvas.height+50;
+                this.size = Math.random()*2; this.speedY = Math.random()*1.5+0.5;
+                this.color = ['#ff4500', '#ff8c00', '#ffd700'][Math.floor(Math.random()*3)];
+                this.opacity = Math.random()*0.6+0.4;
             }
-        };
-        document.styleSheets[0].insertRule('body { user-select: none; -webkit-user-select: none; }', 0);
+            update() { this.y-=this.speedY; this.opacity-=0.002; if(this.y<-10 || this.opacity<=0) this.init(); }
+            draw() { ctx.globalAlpha=this.opacity; ctx.fillStyle=this.color; ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fill(); }
+        }
+        for(let i=0; i<100; i++) particles.push(new Particle());
+        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update(); p.draw();}); requestAnimationFrame(animate); }
+        animate();
+
+        setInterval(() => showToast("أهلاً بك في فضاء خالد KB التقني! 🎓"), 15000);
     </script>
 </body>
 </html>
