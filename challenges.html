@@ -38,7 +38,7 @@
             z-index: 100;
         }
 
-        .radar-bar-bg { background: #233554; height: 6px; border-radius: 3px; margin-top: 5px; margin-bottom: 10px; overflow: hidden; }
+        .radar-bar-bg { background: #020f27; height: 6px; border-radius: 3px; margin-top: 5px; margin-bottom: 10px; overflow: hidden; }
         .radar-fill { height: 100%; width: 0%; transition: 0.8s ease-out; }
 
         .challenge-container { 
@@ -48,7 +48,7 @@
             padding: 30px; 
             border-radius: 25px; 
             border: 2px solid var(--primary); 
-            box-shadow: 0 0 30px rgba(168, 85, 247, 0.2); 
+            box-shadow: 0 0 30px rgba(31, 5, 56, 0.2); 
             position: relative;
         }
 
@@ -59,7 +59,7 @@
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
         .option-btn { 
-            background: #172a45; border: 1px solid #233554; color: var(--text); 
+            background: #031631; border: 1px solid #050d1b; color: var(--text); 
             padding: 18px; border-radius: 15px; cursor: pointer; transition: 0.3s; 
             font-size: 1em; font-weight: 500;
         }
@@ -73,10 +73,10 @@
             margin-top: 30px; padding: 12px 50px; background: var(--primary); 
             color: white; border: none; border-radius: 30px; cursor: pointer; 
             display: none; font-weight: bold; font-size: 1.1em; 
-            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+            box-shadow: 0 5px 15px rgba(25, 5, 44, 0.4);
         }
 
-        .progress-bar { width: 100%; height: 10px; background: #233554; border-radius: 5px; margin-top: 35px; overflow: hidden; }
+        .progress-bar { width: 100%; height: 10px; background: #020a16; border-radius: 5px; margin-top: 35px; overflow: hidden; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: 0.5s; }
 
         .footer-btns { margin-top: 40px; }
@@ -87,6 +87,17 @@
         .home-btn:hover { background: var(--secondary); color: var(--bg); }
 
         @media (max-width: 900px) { #skill-radar { position: static; width: auto; margin: 20px auto; max-width: 700px; } }
+        /* كود خلفية الشظايا */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* لجعلها خلف المحتوى */
+    pointer-events: none;
+    background: #000; /* لون الخلفية الأساسي */
+}
     </style>
 </head>
 <body>
@@ -124,6 +135,7 @@
     <div class="footer-btns">
         <a href="index.html" class="home-btn">🏠 العودة للصفحة الرئيسية</a>
     </div>
+    <canvas id="particle-canvas"></canvas>
 
     <script>
         const questions = [
@@ -257,7 +269,64 @@
 
         loadLevel();
     </script>
+<script>
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
 
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+        constructor() {
+            this.init();
+        }
+        init() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 0.5; // حجم الشظايا
+            this.speedX = (Math.random() - 0.5) * 0.5;
+            this.speedY = (Math.random() - 0.5) * 0.5;
+            this.color = ['#64ffda', '#a855f7', '#ffd700'][Math.floor(Math.random() * 3)]; // ألوان الأكاديمية
+            this.opacity = Math.random() * 0.5 + 0.2;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        }
+        draw() {
+            ctx.globalAlpha = this.opacity;
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function initParticles() {
+        for (let i = 0; i < 80; i++) { // عدد الشظايا
+            particles.push(new Particle());
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        requestAnimationFrame(animate);
+    }
+
+    initParticles();
+    animate();
+</script>
 </body><script>
     // 1. منع القائمة اليمنى (Right Click)
     document.addEventListener('contextmenu', function(e) {
